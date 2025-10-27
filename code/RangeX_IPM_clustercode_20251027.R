@@ -394,7 +394,7 @@ lambda.startpop.boot <- function(a, params_list, start_pop = TRUE) {
     }
     
     # return lambda and required starting population (without kernel)
-    if (start_pop == TRUE) {
+    if (lam.a > 1) {
       return(list(lambda = lam.a, required_sc1 = out_sc1$required_sc1, required_seeds = out_sc1$required_seeds, gT = out_sc1$gT, p_seed_to_sc1 = out_sc1$p_seed_to_sc1))  # consistent list return
     } else {
       return(list(lambda = lam.a, required_sc1 = NA, required_seeds = NA, gT = NA, sp_seed_to_sc1 = NA))  # always return a list with lambda and n0
@@ -406,7 +406,7 @@ lambda.startpop.boot <- function(a, params_list, start_pop = TRUE) {
 ## LOAD DATA -------------------------------------------------------------------
 
 bootpara_wide <- read_csv("/cluster/home/eviseli/ipms/d20251027/IPM_bootstrappedVR_para_cluster.csv")
-#bootpara_wide <- read_csv("/Users/eviseli/Documents/GitHub/RangeX_IPMs/cluster/d20250930/IPM_bootstrappedVR_para_cluster.csv")
+#bootpara_wide <- read_csv("/Users/eviseli/Documents/GitHub/RangeX_IPMs/cluster/d20251027/IPM_bootstrappedVR_para_cluster.csv")
 #bootpara_wide <- read_csv("/Users/eviseli/Documents/GitHub/RangeX_IPMs/cluster/d20250205/IPM_bootstrappedVR_para_cluster.csv")
 
 
