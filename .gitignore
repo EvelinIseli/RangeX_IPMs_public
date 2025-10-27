@@ -3,14 +3,17 @@
 .RData
 .Ruserdata
 
+# large cluster data
 data/derived/IPM_bootstrappedLambda_para_cluster_c2.csv
 data/derived/IPM_bootstrappedLambda_para_cluster_c1.csv
 
 data/derived/IPM_bootstrappedVR_para_cluster_c1.csv
 data/derived/IPM_bootstrappedVR_para_cluster_c2.csv
 
-data/raw/RangeX_clean_EnvTMS4_2021_2023_CHE.csv
+# large raw env logs
+data/raw/RangeX_clean_EnvTMS4_*.csv
+data/raw/RangeX_clean_EnvHOBO_*.csv
 
-output/IPM_BootparaLong_mixed_20251027_census1.csv
-output/IPM_BootparaLong_mixed_20251027_census2.csv
+# large outputs
+output/IPM_BootparaLong_mixed_*.csv
 
