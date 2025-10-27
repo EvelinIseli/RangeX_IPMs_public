@@ -2433,11 +2433,11 @@ lambda.allcombis <- data.frame(spsi_treatcombi = names_list, lambda = lambda_val
          method = "normal")
 
 # save lambdas as a data frame for paper
-write.csv(lambda.allcombis, "output/IPM_lambdas_20251027_census1.csv")
-#write.csv(lambda.allcombis, "output/IPM_lambdas_20250929_census2.csv")
+write.csv(lambda.allcombis, "data/derived/IPM_lambdas_20251027_census1.csv")
+#write.csv(lambda.allcombis, "data/derived/IPM_lambdas_20250929_census2.csv")
 
-lambda.allcombis_c1 <- read.csv("output/IPM_lambdas_20251027_census1.csv")
-lambda.allcombis_c2 <- read.csv("output/IPM_lambdas_20250929_census2.csv")
+lambda.allcombis_c1 <- read.csv("data/derived/IPM_lambdas_20251027_census1.csv")
+lambda.allcombis_c2 <- read.csv("data_derived/IPM_lambdas_20250929_census2.csv")
 
 ### number of bins -------------------------------------------------------------
 
@@ -2554,14 +2554,14 @@ bootpara_wide <- bootpara_wide %>%
                 intercept_flower_status, intercept_number_seeds, intercept_survival, intercept_germ_rate)
 
 # save boot_wide as a data frame
-write.csv(bootpara_wide, "output/IPM_bootstrappedVR_para_cluster.csv")
-#write.csv(bootpara_wide, "output/IPM_bootstrappedVR_para_cluster.csv")
+write.csv(bootpara_wide, "data/derived/IPM_bootstrappedVR_para_cluster_c1.csv")
+#write.csv(bootpara_wide, "data/derived/IPM_bootstrappedVR_para_cluster.csv")
 
 
 ### CLEAN SAVE UP TO CLUSTER CENSUS 1 **************************************----
 
-#save.image(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251021_census1.RData")
-load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251021_census1.RData")
+#save.image(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
+load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
 
 ### ************************************************************************----
 
@@ -2576,78 +2576,12 @@ load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251021_census1.RData")
 
 ### cluster code ---------------------------------------------------------------
 
-# THIS IS ONLY NEEDED FOR LAMBDA CALCULATIONS (DONE ON CLUSTER)
-
-## initialize an empty list to store results
-#params_list_bootpara <- list()
-
-
-#for (i in 1:nrow(bootpara_wide)) {
-#  list_name <- paste(bootpara_wide$species[i], bootpara_wide$site[i], bootpara_wide$treat_combi[i], "bootstrap", bootpara_wide$bootstrap[i], sep = "_")
-#  
-#  params_list_bootpara[[list_name]] <- list(
-#    r_mean = bootpara_wide$r_mean[i],
-#    r_sd = bootpara_wide$r_sd[i],
-#    surv.int = bootpara_wide$intercept_survival[i],
-#    surv.slope = bootpara_wide$slope_survival[i],
-#    growth.int = bootpara_wide$intercept_size_t1_log[i],
-#    growth.slope = bootpara_wide$slope_size_t1_log[i],
-#    growth.sigma = bootpara_wide$sigma[i],
-#    flow.int = bootpara_wide$intercept_flower_status[i],
-#    flow.slope = bootpara_wide$slope_flower_status[i],
-#    seed.int = bootpara_wide$intercept_number_seeds[i],
-#    seed.slope = bootpara_wide$slope_number_seeds[i],
-#    germ.int = bootpara_wide$intercept_germ_rate[i],
-#    est.int = bootpara_wide$intercept_establishment[i],
-#    L = bootpara_wide$L[i],
-#    U = bootpara_wide$U[i]
-#  )
-#}
-#
-## look at the list
-#lapply(params_list_bootnpara[1:3], str)
-#lapply(params_list_bootpara[1:3], str)
-
-
-## save boot_wide as a data frame
-#write.csv(bootpara_wide, "/Users/eviseli/Documents/GitHub/RangeX_IPMs/cluster/d20241204/IPM_bootstrappedVR_para_cluster.csv")
-
-
-## number of cores
-#n.cores <- 24 # for laptop: detectCores() - 1 
-#
-## calculate lambda and starting population for each entry in params_list_boot in parallel
-#lambda_results_wstartpop <- mclapply(seq_along(params_list_bootpara), 
-#                                     function(a) {
-#                                       tryCatch({
-#                                         result <- lambda.startpop.boot(a, params_list = params_list_bootpara, start_pop = TRUE)
-#                                         
-#                                         # debugging: check the class of the result
-#                                         if (!is.list(result)) {
-#                                           message(paste("Iteration", a, "returned a non-list result:", class(result)))
-#                                         }
-#                                         
-#                                         return(result)
-#                                       }, error = function(e) {
-#                                         message(paste("Error in iteration", a, ":", e$message))
-#                                         return(list(lambda = NA, n0 = NA))  # return a consistent list with NAs in case of error
-#                                       })
-#                                     }, 
-#                                     mc.cores = n.cores)
-#names(lambda_results_wstartpop) <- names(params_list_bootpara)
-#
-## prepare a data frame out of the lambda_results list
-#lambda_results_df <- data.frame(
-#  parameter_name = names(lambda_results_wstartpop),
-#  lambda = sapply(lambda_results_wstartpop, function(x) if (!is.null(x)) x$lambda else NA),
-#  n0 = sapply(lambda_results_wstartpop, function(x) if (!is.null(x)) x$n0 else NA),
-#  stringsAsFactors = FALSE)
-#rownames(lambda_results_df) <- NULL
+# The bootstrapped lambda calculations are done on the cluster. See file RangeX_IPMs_clustercode_20251027.R for code used.
 
 
 #  load the calculated lambdas from cluster
-lambda_popsize_bootpara_c1 <- read_csv("/Users/eviseli/Documents/GitHub/RangeX_IPMs/cluster/d20250930/results/IPM_bootstrappedLambda_para_cluster.csv") # census 1 cluster run
-lambda_popsize_bootpara_c2 <- read_csv("/Users/eviseli/Documents/GitHub/RangeX_IPMs/cluster/d20250930_census2/results/IPM_bootstrappedLambda_para_cluster.csv") # census 2 cluster run
+lambda_popsize_bootpara_c1 <- read_csv("data/derived/IPM_bootstrappedLambda_para_cluster_c1.csv") # census 1 cluster run
+lambda_popsize_bootpara_c2 <- read_csv("data/derived/IPM_bootstrappedLambda_para_cluster_c2.csv") # census 2 cluster run
 
 # separate the name and extract lambda data
 lambda_bootpara_c1 <- lambda_popsize_bootpara_c1 %>%
