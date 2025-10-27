@@ -8,3 +8,9 @@ data/derived/IPM_bootstrappedLambda_para_cluster_c1.csv
 
 data/derived/IPM_bootstrappedVR_para_cluster_c1.csv
 data/derived/IPM_bootstrappedVR_para_cluster_c2.csv
+
+data/raw/RangeX_clean_EnvTMS4_2021_2023_CHE.csv
+
+output/IPM_BootparaLong_mixed_20251027_census1.csv
+output/IPM_BootparaLong_mixed_20251027_census2.csv
+
