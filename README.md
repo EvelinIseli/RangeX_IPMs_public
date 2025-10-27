@@ -61,6 +61,10 @@ GitHub repository: https://github.com/EvelinIseli/RangeX_IPMs_public
 For questions or collaborations, contact:
 Evelin Iseli, evelin.iseli@bluewin.ch
 
+---
 
+## License
 
+This repository is shared under the [CC BY-NC-ND 4.0 license](LICENSE).  
+You are welcome to view and download the materials, but reuse, modification, or redistribution of the code or data is not permitted without permission.
 
