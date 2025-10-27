@@ -2,3 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+
+data/derived/IPM_bootstrappedLambda_para_cluster_c2.csv
+data/derived/IPM_bootstrappedLambda_para_cluster_c1.csv
+data/derived/IPM_bootstrappedVR_para_cluster_c1.csv
+data/derived/IPM_bootstrappedVR_para_cluster_c2.csv
