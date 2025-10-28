@@ -787,6 +787,9 @@ dat_clim_int <- terra::rast("/Users/eviseli/Desktop/Downloaded_Data/TerraClimate
 calanda_1 <- st_read("data/raw/study_region_2024.shp") # shapefile of study region 2024 (received from Billur Jan 2025)
 calanda_2 <- st_read("data/raw/study_region.shp") # shapefile of study region 2023 (received from Billur Jan 2025)
 
+calanda_1 <- st_read("/Users/eviseli/Desktop/Downloaded_Data/for_Evelin/data/mask/study_region_2024.shp") # shapefile of study region 2024 (received from Billur Jan 2025)
+calanda_2 <- st_read("/Users/eviseli/Desktop/Downloaded_Data/for_Evelin/data/mask/study_region.shp") # shapefile of study region 2023 (received from Billur Jan 2025)
+
 dem <- rast("/Users/eviseli/Desktop/Downloaded_Data/for_Evelin/data/topography/DEM.tif") # altitudes compiled by Billur from https://earthexplorer.usgs.gov/ (received Jan 2025)
 
 # NOTE: The climate data is 1x1 km resolution of mean annual temperature. It is based on downscaled TerraClimate data, with the downscaling based on CHELSAcruts min and max
@@ -1411,6 +1414,7 @@ ggplot(data = dat_quant) +
   #geom_abline(intercept = elevation_at_predicted_temp_2011, slope = 0, col = "darkred", size = 1.3) +
   #geom_abline(intercept = elevation_at_predicted_temp_2001, slope = 0, col = "#C1C2C7", size = 1) +
   geom_point(aes(x = species_ordered, y = median_elev), size = 4) +
+  geom_point(aes(x = species_ordered, y = max_elev), col = "white", size = 3.5) +
   geom_point(aes(x = species_ordered, y = max_elev)) +
   #geom_point(aes(x = species, y = min_elev)) +
   #geom_errorbar(aes(x = species, ymin = quant0.1_elev, ymax = quant0.9_elev), width = 0.2) +

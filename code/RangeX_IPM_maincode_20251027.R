@@ -2826,7 +2826,7 @@ ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.bootpara.bcpi_c
   scale_color_manual(
     values = treat_combi_site_col,
     name = "Competition Treatment",  # Legend title
-    labels = c("hi_bare.ambi" = "w/o competition", "hi_vege.ambi" = "with competition"),
+    labels = c("hi_bare.ambi" = "without competition", "hi_vege.ambi" = "with competition"),
     guide = guide_legend(order = 1)) +
   scale_shape_manual(
     values = c(19, 21),
@@ -2870,7 +2870,7 @@ hi_warm_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
    scale_x_discrete(labels = function(x) species_names[x]) +
    scale_color_manual(
      values = treat_combi_site_col,
-     labels = c("hi_bare.warm" = "w/o competition", "hi_vege.warm" = "with competition"),
+     labels = c("hi_bare.warm" = "without competition", "hi_vege.warm" = "with competition"),
      guide = guide_legend(order = 1)) +
     scale_shape_manual(
       values = c(19, 21),
@@ -2911,7 +2911,7 @@ hi_warm_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.b
   scale_x_discrete(labels = function(x) species_names[x]) +
   scale_color_manual(
     values = treat_combi_site_col,
-    labels = c("hi_bare.warm" = "w/o competition", "hi_vege.warm" = "with competition"),
+    labels = c("hi_bare.warm" = "without competition", "hi_vege.warm" = "with competition"),
     guide = guide_legend(order = 1)) +
   scale_shape_manual(
     values = c(19, 21),
@@ -2952,7 +2952,7 @@ lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
   scale_color_manual(
     values = treat_combi_site_col,
     name = "Competition Treatment",  # Legend title
-    labels = c("lo_bare.ambi" = "w/o competition", "lo_vege.ambi" = "with competition"),
+    labels = c("lo_bare.ambi" = "without competition", "lo_vege.ambi" = "with competition"),
     guide = guide_legend(order = 1)) +
   scale_shape_manual(
     values = c(19, 21),
@@ -2994,7 +2994,7 @@ lo_ambi_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.b
   scale_color_manual(
     values = treat_combi_site_col,
     name = "Competition Treatment",  # Legend title
-    labels = c("lo_bare.ambi" = "w/o competition", "lo_vege.ambi" = "with competition"),
+    labels = c("lo_bare.ambi" = "without competition", "lo_vege.ambi" = "with competition"),
     guide = guide_legend(order = 1)) +
   scale_shape_manual(
     values = c(19, 21),
