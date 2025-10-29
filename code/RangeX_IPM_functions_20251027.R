@@ -1873,7 +1873,6 @@ required_seeds_from_params <- function(par, n_mesh, target_pop_size = 5000, nste
 }
 
 # define function to calculate the number of individuals in the smallest size class required to reach a target pop. size after nstep years
-# CODE FOR CLUSTER STILL USES OLD FUNCTION (identical results, this one is just faster)
 required_sc1_simple <- function(target_pop_size, kernel, nstep, sc1_index = 1) { # target_pop_size: wanted population size 
   # kernel: IPM kernel K 
   # nstep: number of steps/ years of wanted projection 

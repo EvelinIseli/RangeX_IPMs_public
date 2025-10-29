@@ -392,7 +392,7 @@ bio_ready_log_noout <- bio_ready_log %>%
 results_YS_noout <- predict_biomass(dat1 = bio_ready_log_noout, dat2 = size_adult_log)
 
 # extract results (noout = no outlier)
-model_summaries_YS_noout <- results_YS_noout$models
+model_summaries_YS_noout <- results_YS_noout$models # TABLE S3
 model_variables_YS_noout <- results_YS_noout$variables
 predictions_YS_noout <- results_YS_noout$predictions
 
@@ -400,7 +400,7 @@ predictions_YS_noout <- results_YS_noout$predictions
 mean(model_summaries_YS_noout$R2) # 0.8787244
 sd(model_summaries_YS_noout$R2) # 0.08625693
 
-#get sample size of the groups
+# get sample size of the groups
 summary <- bio_ready_log_noout %>%
   group_by(species, flower_status) %>%
   summarize(count = n())
@@ -834,12 +834,12 @@ dat_hobo2 <- dat_hobo %>%
   left_join(sunrise_sunset, by = c("date", "lat", "lon")) %>%
   filter(date_time >= sunrise & date_time <= sunset)
 
-## calculate mean per day
-#daily_sun_mean <- dat_hobo2 %>%
-#  group_by(site, treat_comp, treat_warm, date) %>%
-#  summarize(daily_sun_mean = mean(temperature)) %>%
-#  ungroup() %>%
-#  mutate(site_warm = paste(site, treat_warm, sep = "."))
+# calculate mean per day
+daily_sun_mean <- dat_hobo2 %>%
+  group_by(site, treat_comp, treat_warm, date) %>%
+  summarize(daily_sun_mean = mean(temperature)) %>%
+  ungroup() %>%
+  mutate(site_warm = paste(site, treat_warm, sep = "."))
 
 # calculate mean per day, but combined over years
 daily_sun_mean_yearly <- dat_hobo2 %>%
@@ -848,13 +848,6 @@ daily_sun_mean_yearly <- dat_hobo2 %>%
   summarize(daily_sun_mean_yearly = mean(temperature)) %>%
   ungroup() %>%
   mutate(site_warm = paste(site, treat_warm, sep = "."))
-
-## same, but ognore competition treatment
-#daily_sun_mean_nocomp <- dat_hobo2 %>%
-#  group_by(site, treat_warm, date) %>%
-#  summarize(daily_sun_mean = mean(temperature)) %>%
-#  ungroup() %>%
-#  mutate(site_warm = paste(site, treat_warm, sep = "."))
 
 # calculate difference between warmed and not warmed at high site
 daily_sun_mean_diff <- daily_sun_mean %>%
@@ -867,18 +860,6 @@ daily_sun_mean_diff <- daily_sun_mean %>%
   mutate(temp_diff = treat_warm_warm - treat_warm_ambi,
          year = year(date)) %>%
   ungroup() 
-
-## same, but ignore competition treatment
-#daily_sun_mean_diff_nocomp <- daily_sun_mean_nocomp %>%
-#  filter(site == "hi") %>%
-#  dplyr::select(-site_warm) %>%
-#  #group_by(treat_comp) %>%
-#  pivot_wider(names_from = treat_warm, 
-#              values_from = daily_sun_mean,
-#              names_prefix = "treat_warm_") %>%
-#  mutate(temp_diff = treat_warm_warm - treat_warm_ambi,
-#         year = year(date)) %>%
-#  ungroup() 
 
 # when were the OTCs up?
 dat_otc <- data.frame("year" = year(c("2021-06-29", "2021-04-26", "2023-05-11")), "OTC_up" = ymd(c("2021-06-29", "2021-04-26", "2023-05-11")), "OTC_down" = ymd(c("2021-10-16", "2021-10-10", "2023-10-10")))
@@ -950,16 +931,6 @@ daily_sun_mean_tms4 <- dat_tms4.2 %>%
   ungroup() %>%
   mutate(site_warm = paste(site, treat_warm, sep = "."))
 
-## same, but ignore competition treatment
-#daily_sun_mean_tms4_nocomp <- dat_tms4.2 %>%
-#  group_by(site, treat_warm, date) %>%
-#  summarize(daily_sun_mean_T1 = mean(TMS_T1),
-#            daily_sun_mean_T2 = mean(TMS_T2),
-#            daily_sun_mean_T3 = mean(TMS_T3),
-#            daily_sun_mean_moist = mean(TMS_moist)) %>%
-#  ungroup() %>%
-#  mutate(site_warm = paste(site, treat_warm, sep = "."))
-
 # calculate difference between warmed and not warmed at high site
 daily_sun_mean_diff_tms4 <- daily_sun_mean_tms4 %>%
   filter(site == "hi") %>%
@@ -974,21 +945,6 @@ daily_sun_mean_diff_tms4 <- daily_sun_mean_tms4 %>%
          temp_diff_moist = daily_sun_mean_moist_treat_warm_warm - daily_sun_mean_moist_treat_warm_ambi,
          year = year(date)) %>%
   ungroup() 
-
-## same, but ignore competition treatment
-#daily_sun_mean_diff_tms4_nocomp <- daily_sun_mean_tms4_nocomp %>%
-#  filter(site == "hi") %>%
-#  dplyr::select(-site_warm) %>%
-#  #group_by(treat_comp) %>%
-#  pivot_wider(names_from = treat_warm, 
-#              values_from = c(daily_sun_mean_T1, daily_sun_mean_T2, daily_sun_mean_T3, daily_sun_mean_moist),
-#              names_prefix = "treat_warm_") %>%
-#  mutate(temp_diff_T1 = daily_sun_mean_T1_treat_warm_warm - daily_sun_mean_T1_treat_warm_ambi,
-#         temp_diff_T2 = daily_sun_mean_T2_treat_warm_warm - daily_sun_mean_T2_treat_warm_ambi,
-#         temp_diff_T3 = daily_sun_mean_T3_treat_warm_warm - daily_sun_mean_T3_treat_warm_ambi,
-#         temp_diff_moist = daily_sun_mean_moist_treat_warm_warm - daily_sun_mean_moist_treat_warm_ambi,
-#         year = year(date)) %>%
-#  ungroup() 
 
 # when were the OTCs up? --> see at hobo code
 
@@ -1084,7 +1040,7 @@ mean(dat_tms4_daily_mean_hi[dat_tms4_daily_mean_hi$treat_warm == "ambi" & dat_tm
 sd(dat_tms4_daily_mean_hi[dat_tms4_daily_mean_hi$treat_warm == "warm" & dat_tms4_daily_mean_hi$treat_comp == "vege",]$daily_mean_moist)
 sd(dat_tms4_daily_mean_hi[dat_tms4_daily_mean_hi$treat_warm == "ambi" & dat_tms4_daily_mean_hi$treat_comp == "vege",]$daily_mean_moist)
 
-# how many loggers per treatment are included in cleaned data?
+# how many loggers per treatment are included in cleaned data? (TABLE S6)
 tms_summary <- dat_tms4 %>%
   mutate(year = year(date)) %>%
   left_join(dat_otc, by = "year") %>%
@@ -1114,6 +1070,7 @@ daily_sun_mean_yearly$date_day <- as.Date(daily_sun_mean_yearly$date_day, format
 daily_sun_mean_yearly_plot <- daily_sun_mean_yearly %>%
   filter(format(date_day, "%m-%d") > "05-01" & format(date_day, "%m-%d") < "10-01")
 
+# FIGURE S2
 png("plots/FigS_EnvDat_20251027.png", width = 17, height = 17, units="cm", res=800)
 
 ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y = daily_sun_mean_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
@@ -1179,7 +1136,7 @@ hobo_with_legend <- ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y
 
 legend <- g_legend(hobo_with_legend)
 
-ggsave("/Users/eviseli/Desktop/FigS_EnvDat_legend_20251027.png", legend, width = 9, height = 1, dpi = 300)
+ggsave("plots/FigS_EnvDat_legend_20251027.png", legend, width = 9, height = 1, dpi = 300)
 
 
 ### TMS4
@@ -1210,6 +1167,9 @@ t.test(daily_sun_mean_tms4_hi[daily_sun_mean_tms4_hi$treat_warm == "warm" & dail
 # how many plots in Caphe?
 length(unique(dat_caphe$plot_id))
 
+max(dat_caphe$altitude_max, na.rm = TRUE)
+min(dat_caphe$altitude_min, na.rm = TRUE)
+
 
 # extract focal species
 dat_focal <- dat_caphe %>%
@@ -1239,7 +1199,7 @@ dat_focal <- dat_focal %>%
 
 
 
-# calculate 0.9 quantile for upper range edge
+# calculate 0.9 quantile for upper range edge (TABLE S1)
 dat_quant <- dat_focal %>%
   group_by(species) %>%
   summarize(quant0.9_elev = round(quantile(altitude_max, probs = 0.9, na.rm = TRUE), 0),
@@ -1391,7 +1351,7 @@ slope_decade; ci_decade  # headline number + 95% CI
 
 ### plot -----------------------------------------------------------------------
 
-### PLOT RANGE FOCALS 
+### PLOT RANGE FOCALS (FIGURE 1)
 
 # manually define axis breaks
 elevation_breaks <- seq(0, max(dat_quant$quant0.9_elev), by = 500)

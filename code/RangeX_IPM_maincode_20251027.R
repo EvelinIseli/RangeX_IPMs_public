@@ -3572,3 +3572,46 @@ ggplot(data = popsize.allcombis.bootpara.bcpi,
     labels = scales::trans_format("log10", scales::math_format(10^.x))) #+
 
 dev.off()
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# SEED PRODUCTION  ----
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# get average height of lo site vege plot plants of the species with lamda > 1 at hi avege.ambi
+
+# create a nice data frame
+avg_height <- pred_growth %>%
+  filter(site == "lo" & treat_combi == "vege.ambi" & species %in% spec_startposize) %>%
+  group_by(species) %>%
+  summarize(mean_height = mean(size_t0_log, na.rm = TRUE))
+
+avg_height_seed <- pred_seed %>%
+  filter(site == "lo" & treat_combi == "vege.ambi" & species %in% spec_startposize) %>%
+  group_by(species) %>%
+  summarize(mean_height = mean(size_t0_log, na.rm = TRUE))
+
+# predict seed production of average height individual
+pred_seed_avgheight <- avg_height %>%
+  left_join(vr_long[vr_long$vital_rate == "number_seeds" & vr_long$site == "lo" & vr_long$treat_combi == "vege.ambi",], by = c("species")) %>%
+  rename("seed.int" = "intercept", "seed.slope" = "slope") %>%
+  rowwise() %>%
+  mutate(seed.no = seeds.t0_mean(mean_height, pick(seed.int, seed.slope))) %>%  
+  ungroup()
+
+# TABLE S5
+avg_seed <- pred_seed %>%
+  filter(site == "lo" & treat_comp == "vege" & species %in% spec_startposize) %>% # site == "lo" & 
+  group_by(species) %>%
+  summarize(mean_seedno = mean(number_seeds, na.rm = TRUE),
+            sd_seedno = sd(number_seeds, na.rm = TRUE), 
+            upper_sd = mean_seedno + sd_seedno,
+            lower_sd = mean_seedno - sd_seedno,
+            max_seeds = max(number_seeds, na.rm = TRUE))
+
+# get no. individuals producing seeds at lo ambi vege (TABLE S5)
+dat_YS_ready %>%
+  filter(site == "lo", treat_comp == "vege", treat_warm == "ambi", species %in% spec_startposize, flower_status == 1) %>%
+  group_by(species) %>%
+  count()
+
+
