@@ -2152,7 +2152,7 @@ pred_est <- dat_germ_ready %>%
 ### SIZE DEPENDENT
 
 # survival 
-png("plots/FigVR_surv_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_a_VR_surv_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,], aes(x = size_t0_log, y = as.numeric(as.character(survival)))) +
   geom_jitter(col = "gray", position = position_jitter(height = 0.05)) +
@@ -2167,7 +2167,7 @@ ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,], aes(x = size_t0_lo
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "a") +
+  labs(tag = "A") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
@@ -2192,10 +2192,10 @@ surv_with_legend <- ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,]
 legend <- g_legend(surv_with_legend)
 grid.draw(legend)
 
-ggsave("plots/FigVR_legend_20251027.png", legend, width = 7.2, height = 1, dpi = 300)
+ggsave("plots/FigS3_VR_legend_20251027.png", legend, width = 7.2, height = 1, dpi = 300)
   
 # growth
-png("plots/FigVR_grow_nolegend_20251027_census1.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_b_VR_grow_nolegend_20251027_census1.png", width = 24, height = 10, units="cm", res=800)
 #png("plots/FigVR_grow_nolegend_20250929_census2.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_growth[is.na(pred_growth$size_t1_log) == FALSE,], aes(x = size_t0_log, y = size_t1_log)) +
@@ -2211,14 +2211,14 @@ ggplot(data = pred_growth[is.na(pred_growth$size_t1_log) == FALSE,], aes(x = siz
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "b") +
+  labs(tag = "B") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
 dev.off()
 
 # flowering
-png("plots/FigVR_flow_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_c_VR_flow_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_flower[is.na(pred_flower$flower_status) == FALSE,], aes(x = size_t0_log, y = as.numeric(as.character(flower_status)))) +
   geom_point(col = "gray", position = position_jitter(height = 0.05)) +
@@ -2233,14 +2233,14 @@ ggplot(data = pred_flower[is.na(pred_flower$flower_status) == FALSE,], aes(x = s
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "c") +
+  labs(tag = "C") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
 dev.off()
 
 # seed production
-png("plots/FigVR_seed_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_d_VR_seed_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_seed[is.na(pred_seed$number_seeds) == FALSE,], aes(x = size_t0_log, y = log(number_seeds))) +
   geom_point(col = "gray") +
@@ -2255,7 +2255,7 @@ ggplot(data = pred_seed[is.na(pred_seed$number_seeds) == FALSE,], aes(x = size_t
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "d") +
+  labs(tag = "D") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
@@ -2264,7 +2264,7 @@ dev.off()
 ### SIZE INDEPENDENT
 
 # germination rate
-png("plots/FigVR_germ_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_e_VR_germ_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_germ[is.na(pred_germ$germ_rate) == FALSE,], aes(x = treat_combi, y = germ_rate, group = treat_combi)) +
   geom_point(col = "gray") +
@@ -2279,14 +2279,14 @@ ggplot(data = pred_germ[is.na(pred_germ$germ_rate) == FALSE,], aes(x = treat_com
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "e") +
+  labs(tag = "E") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
 dev.off()
 
 # establishment rate
-png("plots/FigVR_etsb_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_f_VR_etsb_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_est[is.na(pred_est$establishment) == FALSE,], aes(x = treat_combi, y = establishment_plot)) +
   geom_point(col = "gray", position = position_jitter(height = 0.01)) +
@@ -2301,7 +2301,7 @@ ggplot(data = pred_est[is.na(pred_est$establishment) == FALSE,], aes(x = treat_c
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "f") +
+  labs(tag = "F") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
@@ -2311,7 +2311,7 @@ dev.off()
 # RECRUIT SIZE DISTRIBUTION
 
 # recruit size distribution
-png("plots/FigVR_rcsz_nolegend_20251027.png", width = 24, height = 5, units="cm", res=800)
+png("plots/FigS3_g_VR_rcsz_nolegend_20251027.png", width = 24, height = 5, units="cm", res=800)
 
 ggplot(data = pred_recruit, aes(x = size_t0_log)) +
   geom_histogram(aes(y = ..density..), bins = 20, fill = "gray", alpha = 0.5) +
@@ -2326,7 +2326,7 @@ ggplot(data = pred_recruit, aes(x = size_t0_log)) +
                      values = treat_combi_site_col, 
                      labels = treat_combi_labs) +
   guides(colour = FALSE) +
-  labs(tag = "g") +
+  labs(tag = "G") +
   theme(plot.tag.position = c(0.015, 0.97),
         plot.tag = element_text(face = "bold", size = 24))
 
@@ -2747,7 +2747,7 @@ posd <- position_dodge(width = 0.7) # position_dodge2(width = 0.7, preserve = "s
 
 
 # plot 1: ambient high site
-png("plots/Fig2_PGRhiambi_20251027_census1.png", width = 17, height = 10, units="cm", res=800)
+png("plots/Fig2_PGRhiambi_census1_20251027.png", width = 17, height = 10, units="cm", res=800)
 
 # use upper_BCPI_red here to prevent the error bars showing through for points with reduced opacity --> but only if the errorbars are shorter than the points (manually defined above)
 ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",],
@@ -2792,7 +2792,7 @@ ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c
 
 dev.off()
 
-png("plots/FigS_PGRhiambi_20251027_census2.png", width = 17, height = 10, units="cm", res=800)
+png("plots/FigS1_a_PGRhiambi_census2_20251027.png", width = 17, height = 10, units="cm", res=800)
 
 # use upper_BCPI_red here to prevent the error bars showing through for points with reduced opacity --> but only if the errorbars are shorter than the points (manually defined above)
 ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.bootpara.bcpi_c2$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c2$site == "hi",],
@@ -3008,7 +3008,7 @@ lo_ambi_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.b
 
 # combine the plots 
 
-png("plots/FigS_PGRcombined_20251027_census1.png", width = 17, height = 17, units="cm", res=800)
+png("plots/FigSX_PGRhiwarmlo_census1_20251027.png", width = 17, height = 17, units="cm", res=800)
 
 hi_warm_c1 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
@@ -3019,7 +3019,13 @@ hi_warm_c1 +
 
 dev.off()
 
-png("plots/FigS_PGRcombined_20251027_census2.png", width = 17, height = 17, units="cm", res=800)
+png("plots/Fig3_c_PGRlo_census1_20251027.png", , width = 17, height = 10, units="cm", res=800)
+
+lo_ambi_c1 
+
+dev.off()
+
+png("plots/FigS1_bc_PGRhiwarmlo_census2_20251027.png", width = 17, height = 17, units="cm", res=800)
 
 hi_warm_c2 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
@@ -3097,7 +3103,7 @@ lab_pad <- 0.04 * diff(lims) # where to place the in-figure labels
 
 
 # plot ambient vs. warmed growth rate
-png("plots/Fig3_PGRambivswarm_20251027_census1.png", width = 17, height = 10, units="cm", res=800)
+png("plots/Fig3_ab_PGRambivswarm_census1_20251027.png", width = 17, height = 10, units="cm", res=800)
 
 ggplot(data = lambda.allcombis_c1_hi_widewarm ,
        aes(x = lambda.ambi, y = lambda.warm)) +
@@ -3326,7 +3332,7 @@ plot_comp_effect <- ggplot() +
                      guide = guide_legend(order = 1)) +
   guides(colour = "none")
 
-png("plots/Fig4a_PGRbarevsvege_20251027_census1.png", width = 10, height = 10, units="cm", res=800)
+png("plots/Fig4a_PGRbarevsvege_census1_20251027.png", width = 10, height = 10, units="cm", res=800)
 
 plot_comp_effect
 
