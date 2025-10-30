@@ -48,7 +48,7 @@ This repository includes all code necessary to reproduce the main IPM analyses. 
 
 #### Excluded (too large for GitHub)
 - High-frequency environmental log data (`RangeX_clean_EnvTMS4_2021_2023_CHE.csv`, `RangeX_clean_EnvHOBO_2021_2023_CHE.csv`).
-- Downscaled macroclimatic temperature data based on CHELSAcruts and TerraClimate (downscaling as in Iseli et al. (2025)).
+- Downscaled macroclimatic temperature data based on CHELSAcruts and TerraClimate (downscaling as in Iseli et al. (2025), https://doi.org/10.1111/1365-2745.70114).
 - Species distribution data for the study area (publicly available in aggregated form via InfoFlora (https://www.infoflora.ch)).
 - Large bootstrapped cluster input and output files (`IPM_BootparaLong_mixed_*.csv`, `IPM_bootstrappedLambda_para_cluster_*.csv`, `IPM_bootstrappedVR_para_cluster_*.csv`).
 
@@ -58,7 +58,7 @@ Once available, this README will be updated with permanent DOI links and instruc
 #### Reproducibility note
 All intermediate IPM results can be reproduced from the included code, though some steps (e.g. model bootstrapping and full IPM fitting) are computationally intensive and were run on a cluster environment.
 
-Note that one preprocessing script (code/RangeX_dataprep_envdat_20251027.R, part 2) requires local environmental and species distribution datasets that are not included in this repository due to data-sharing and size restrictions. This step prepares environmental summaries but is not required to reproduce the IPM analyses or population growth rate estimates. 
+Note that one preprocessing script (`code/RangeX_dataprep_envdat_20251027.R`, part 2) requires local environmental and species distribution datasets that are not included in this repository due to data-sharing and size restrictions. This step prepares environmental summaries but is not required to reproduce the IPM analyses or population growth rate estimates. 
 
 ---
 
