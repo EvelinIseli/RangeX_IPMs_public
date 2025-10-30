@@ -40,9 +40,25 @@ Then run the scripts in this order:
 
 ### Data availability
 
-Raw and derived data are temporarily included in data/ for review.
+This repository includes all code necessary to reproduce the main IPM analyses. However, several large raw or intermediate datasets have been excluded from the GitHub repository due to size limits (>100 MB) or pending publication.
 
-Once the data paper is published, this repository will be updated with the DOI link.
+#### Included
+- Cleaned demographic and germination datasets used for IPM fitting (`data/raw/`).
+- Plots and IPM output summaries.
+
+#### Excluded (too large for GitHub)
+- High-frequency environmental log data (`RangeX_clean_EnvTMS4_2021_2023_CHE.csv`, `RangeX_clean_EnvHOBO_2021_2023_CHE.csv`).
+- Downscaled macroclimatic temperature data based on CHELSAcruts and TerraClimate (downscaling as in Iseli et al. (2025)).
+- Species distribution data for the study area (publicly available in aggregated form via InfoFlora (https://www.infoflora.ch)).
+- Large bootstrapped cluster input and output files (`IPM_BootparaLong_mixed_*.csv`, `IPM_bootstrappedLambda_para_cluster_*.csv`, `IPM_bootstrappedVR_para_cluster_*.csv`).
+
+These files are archived locally and will be deposited in a public data repository (e.g. Dryad or Zenodo) upon publication.  
+Once available, this README will be updated with permanent DOI links and instructions for full reproducibility.
+
+#### Reproducibility note
+All intermediate IPM results can be reproduced from the included code, though some steps (e.g. model bootstrapping and full IPM fitting) are computationally intensive and were run on a cluster environment.
+
+Note that one preprocessing script (code/RangeX_dataprep_envdat_20251027.R, part 2) requires local environmental and species distribution datasets that are not included in this repository due to data-sharing and size restrictions. This step prepares environmental summaries but is not required to reproduce the IPM analyses or population growth rate estimates. 
 
 ---
 
