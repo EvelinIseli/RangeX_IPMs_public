@@ -36,6 +36,12 @@ Then run the scripts in this order:
 2. code/RangeX_IPM_maincode_20251027.R
 3. code/RangeX_IPM_clustercode_20251027.R (optional --> the output of the cluster code is stored in data/derived and loaded in RangeX_IPM_maincode_20251027.R)
 
+#### Note
+All intermediate IPM results can be reproduced from the included code, though some steps (e.g. model bootstrapping and full IPM fitting) are computationally intensive and were run on a cluster environment.
+
+Note that one preprocessing script (`code/RangeX_dataprep_envdat_20251027.R`, part 2) requires local environmental and species distribution datasets that are not included in this repository due to data-sharing and size restrictions. This step prepares environmental summaries but is not required to reproduce the IPM analyses or population growth rate estimates. 
+
+
 ---
 
 ### Data availability
@@ -54,11 +60,6 @@ This repository includes all code necessary to reproduce the main IPM analyses. 
 
 These files are archived locally and will be deposited in a public data repository (e.g. Dryad or Zenodo) upon publication.  
 Once available, this README will be updated with permanent DOI links and instructions for full reproducibility.
-
-#### Reproducibility note
-All intermediate IPM results can be reproduced from the included code, though some steps (e.g. model bootstrapping and full IPM fitting) are computationally intensive and were run on a cluster environment.
-
-Note that one preprocessing script (`code/RangeX_dataprep_envdat_20251027.R`, part 2) requires local environmental and species distribution datasets that are not included in this repository due to data-sharing and size restrictions. This step prepares environmental summaries but is not required to reproduce the IPM analyses or population growth rate estimates. 
 
 ---
 
