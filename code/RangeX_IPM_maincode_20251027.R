@@ -2563,7 +2563,7 @@ write.csv(bootpara_wide, "data/derived/IPM_bootstrappedVR_para_cluster_c1.csv")
 ### CLEAN SAVE UP TO CLUSTER CENSUS 1 **************************************----
 
 #save.image(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
-load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
+#load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
 
 ### ************************************************************************----
 
