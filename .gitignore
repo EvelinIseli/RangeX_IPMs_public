@@ -2,18 +2,14 @@
 .Rhistory
 .RData
 .Ruserdata
-
 # large cluster data
 data/derived/IPM_bootstrappedLambda_para_cluster_c2.csv
 data/derived/IPM_bootstrappedLambda_para_cluster_c1.csv
-
 data/derived/IPM_bootstrappedVR_para_cluster_c1.csv
 data/derived/IPM_bootstrappedVR_para_cluster_c2.csv
-
 # large raw env logs
 data/raw/RangeX_clean_EnvTMS4_*.csv
 data/raw/RangeX_clean_EnvHOBO_*.csv
-
 # large outputs
 output/IPM_BootparaLong_mixed_*.csv
-
+Plotting_Jake.R
