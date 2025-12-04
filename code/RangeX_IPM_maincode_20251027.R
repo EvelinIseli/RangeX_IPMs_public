@@ -1719,6 +1719,33 @@ pre_paraboot_sizeind <- bind_rows(list_paraboot_sid) %>%
   mutate(sigma = ifelse(vital_rate != "size_t1_log", NA, sigma))
 
 
+
+
+
+
+
+### CLEAN SAVE UP TO EXTRACTING BOOTSTRAPPING COEFFICIENTS ****************----
+
+#save.image(file = "/Users/mac/Desktop/SaveImageR/IPMs_20251204.RData")
+load(file = "/Users/mac/Desktop/SaveImageR/IPMs_20251204.RData")
+
+### ************************************************************************----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### extracting coefficients --------------------------------------------------------------
 
 # all the coefficients and SDs of all the variables needed are ready, but for each lambda the coefficients should be assembled differently
