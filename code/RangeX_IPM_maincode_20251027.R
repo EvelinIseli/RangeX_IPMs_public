@@ -43,7 +43,7 @@ library(patchwork)
 library(grid)
 library(scales) # symlog axis
 
-source("/Users/eviseli/Documents/GitHub/RangeX_IPMs/code/RangeX_IPM_functions_mixed.R") # set to location of function file
+source("/Users/mac/Documents/Github/RangeX_IPMs_public/code/RangeX_IPM_functions_20251027.R") # set to location of function file
 
 # small functions
 
