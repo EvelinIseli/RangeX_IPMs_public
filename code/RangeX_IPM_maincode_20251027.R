@@ -2752,13 +2752,16 @@ lambda.allcombis.bootpara_c2 <- lambda.allcombis.bootpara_c2 %>%
 posd <- position_dodge(width = 0.8) # position_dodge2(width = 0.7, preserve = "single")
 posd2 <- position_dodge2(width = 0.8, preserve = "single", reverse = TRUE)
 
+# define position of labels
+x_pos <- max(lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",]$lambda) * 1.02
+
 # CENSUS 1: HI AMBI
 
 # plot 1: ambient high site
-png("plots/Fig2_PGRhiambi_census1_20251206.png", width = 17, height = 10, units="cm", res=800)
+#png("plots/Fig2_PGRhiambi_census1_20251206.png", width = 17, height = 10, units="cm", res=800)
 
 # use upper_BCPI_red here to prevent the error bars showing through for points with reduced opacity --> but only if the errorbars are shorter than the points (manually defined above)
-ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",],
+hi_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",],
        aes(x = species, y = lambda, col = site_treat_combi)) + # , alpha = lambda_sig
   geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
   geom_line(aes(group = species), 
@@ -2771,7 +2774,12 @@ ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c
     axis.title.x = element_blank(),
     axis.title.y = element_text(size = 14),
     axis.text = element_text(size = 12),
-    axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
+    axis.text.x = element_blank(),
+    axis.ticks = element_blank(),
+    #axis.title.x = element_blank(),
+    #axis.title.y = element_text(size = 14),
+    #axis.text = element_text(size = 12),
+    #axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
     #axis.ticks = element_blank(),
     legend.background = element_blank(), 
     legend.text = element_text(size = 12),
@@ -2802,15 +2810,15 @@ ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c
     guide = guide_legend(order = 2)) +
   guides(alpha = "none") +
   #facet_wrap(~daucar_facet, scales = "free")
-  geom_text(
-    data = subset(lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",], 
-                  lambda_sig == "n-sig."),   # non-significant only
-    aes(x = species, y = lambda, label = "n.s.", group = treat_comp_fact),
-    position = posd2, size = 4, vjust = 2.2, hjust = -0.1, show.legend = FALSE) +
-  annotate("text",x = Inf, y = 1.05, label = "Establishment succeeds", hjust = 3.4, vjust = 0, size = 4) +
-  annotate("text", x = Inf, y = 0.95, label = "Establishment fails", hjust = 4.4, vjust = 1, size = 4)
+  #geom_text(
+  #  data = subset(lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",], 
+  #                lambda_sig == "n-sig."),   # non-significant only
+  #  aes(x = species, y = lambda, label = "n.s.", group = treat_comp_fact),
+  #  position = posd2, size = 4, vjust = 2.2, hjust = -0.1, show.legend = FALSE, col = "black") +
+  annotate("text",x = 0.6, y = 1.05, label = "Establishment succeeds", hjust = 0, vjust = 0, size = 4) +
+  annotate("text", x = 0.6, y = 0.95, label = "Establishment fails", hjust = 0, vjust = 1, size = 4)
 
-dev.off()
+#dev.off()
 
 # display all non-significantly different lambdas from 1
 lambda.allcombis.bootpara.bcpi_c1 %>%
@@ -2893,8 +2901,7 @@ hi_warm_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
      axis.title.x = element_blank(),
      axis.title.y = element_text(size = 14),
      axis.text = element_text(size = 12),
-     axis.text.x = element_blank(),
-     axis.ticks = element_blank(),
+     axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
      legend.background = element_blank(), 
      legend.text = element_text(size = 12),
      legend.title = element_blank(),
@@ -3023,6 +3030,8 @@ lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
     guide = guide_legend(order = 2)) +
   guides(alpha = "none", shape = "none") #+
   #ylim(0, 30)
+  #annotate("text",x = Inf, y = 1.05, label = "Establishment succeeds", hjust = 3.4, vjust = 0, size = 4) +
+  #annotate("text", x = Inf, y = 0.95, label = "Establishment fails", hjust = 4.4, vjust = 1, size = 4)
 
 # display all non-significantly different lambdas from 1
 lambda.allcombis.bootpara.bcpi_c1 %>%
@@ -3081,13 +3090,13 @@ lambda.allcombis.bootpara.bcpi_c2 %>%
   filter(lambda_sig == "n-sig.") 
 
 
-# plot 4: combined warmed and lo site plots
+# Figure 2: hi ambi and lo ambi (census 1)
 
 # combine the plots 
 
-png("plots/FigSX_PGRhiwarmlo_census1_20251206.png", width = 17, height = 17, units="cm", res=800)
+png("plots/Fig2_ab_PGRhiambilo_census1_20251206.png", width = 17, height = 17, units="cm", res=800)
 
-hi_warm_c1 + 
+hi_ambi_c1 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
   lo_ambi_c1 + 
   plot_layout(ncol = 1) +   
@@ -3096,13 +3105,16 @@ hi_warm_c1 +
 
 dev.off()
 
-png("plots/Fig3_c_PGRlo_census1_20251206.png", , width = 17, height = 10, units="cm", res=800)
+# Panel c for Figure SX: hi warm (census 1)
+png("plots/FigSX_c_PGRhiwarm_census1_20251206.png", , width = 17, height = 10, units="cm", res=800)
 
-lo_ambi_c1 
+hi_warm_c1 
 
 dev.off()
 
-png("plots/FigS1_abc_PGRhiwarmlo_census2_20251206.png", width = 17, height = 25, units="cm", res=800)
+# Figure SX: hi ambi, hi warm and lo ambi (census 2)
+
+png("plots/FigS1_abc_PGRhiambiwarmlo_census2_20251206.png", width = 17, height = 25, units="cm", res=800)
 
 hi_ambi_c2 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
@@ -3182,7 +3194,7 @@ lab_pad <- 0.04 * diff(lims) # where to place the in-figure labels
 
 
 # plot ambient vs. warmed growth rate
-png("plots/Fig3_ab_PGRambivswarm_census1_20251027.png", width = 17, height = 10, units="cm", res=800)
+png("plots/Fig3_ab_PGRambivswarm_census1_20251206.png", width = 17, height = 10, units="cm", res=800)
 
 ggplot(data = lambda.allcombis_c1_hi_widewarm ,
        aes(x = lambda.ambi, y = lambda.warm)) +
@@ -3206,8 +3218,8 @@ ggplot(data = lambda.allcombis_c1_hi_widewarm ,
     strip.background = element_blank(),
     strip.text = element_text(size = 14)
   ) +
-  labs(x = expression(paste("Population growth rate ", lambda, " (ambient)")),
-       y = expression(paste("Population growth rate ", lambda, " (warmed)"))) +
+  labs(x = "Population growth rate λ (ambient)",
+       y = "Population growth rate λ\n(warmed)") +
   coord_equal(xlim = lims, ylim = lims, expand = FALSE) +
   annotate("text", x = lims[1] + lab_pad, y = lims[2] - lab_pad,
            label = "warming increases \u03BB", hjust = 0, vjust = 1,
