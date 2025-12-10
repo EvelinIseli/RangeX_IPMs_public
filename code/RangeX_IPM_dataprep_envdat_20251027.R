@@ -781,15 +781,12 @@ dat_alti <- read_csv("data/raw/SpeciesAltitudes.csv") # Caphe altitudes provided
 
 
 # load macroclimate data (not provided --> )
-dat_clim <- terra::rast("/Users/eviseli/Desktop/Downloaded_Data/TerraClimate/terra_final.tif")
-dat_clim_int <- terra::rast("/Users/eviseli/Desktop/Downloaded_Data/TerraClimate/terra_final_integrated.tif")
+dat_clim <- terra::rast("data/raw/terra_final.tif")
+dat_clim_int <- terra::rast("data/raw/terra_final_integrated.tif")
 calanda_1 <- st_read("data/raw/study_region_2024.shp") # shapefile of study region 2024 (received from Billur Jan 2025)
 calanda_2 <- st_read("data/raw/study_region.shp") # shapefile of study region 2023 (received from Billur Jan 2025)
 
-calanda_1 <- st_read("/Users/eviseli/Desktop/Downloaded_Data/for_Evelin/data/mask/study_region_2024.shp") # shapefile of study region 2024 (received from Billur Jan 2025)
-calanda_2 <- st_read("/Users/eviseli/Desktop/Downloaded_Data/for_Evelin/data/mask/study_region.shp") # shapefile of study region 2023 (received from Billur Jan 2025)
-
-dem <- rast("/Users/eviseli/Desktop/Downloaded_Data/for_Evelin/data/topography/DEM.tif") # altitudes compiled by Billur from https://earthexplorer.usgs.gov/ (received Jan 2025)
+dem <- rast("/Volumes/ExtDesktop/Downloaded_Data/for_Evelin/data/topography/DEM.tif") # altitudes compiled by Billur from https://earthexplorer.usgs.gov/ (received Jan 2025)
 
 # NOTE: The climate data is 1x1 km resolution of mean annual temperature. It is based on downscaled TerraClimate data, with the downscaling based on CHELSAcruts min and max
 # temperatures between 2000 - 2016. Downscaling was done using the factor change methodology and using the metods described in Iseli et al. (2025),  https://doi.org/10.1111/1365-2745.70114
@@ -1362,7 +1359,7 @@ label_data <- no_occ %>%
 sp_order <- c("daucar", "medlup", "cenjac", "hypper", "plamed", "broere", "salpra", "scacol", "silvul", "brapin")
 dat_quant$species <- factor(dat_quant$species, levels = sp_order)
 
-png("plots/Fig1_focals_20251027.png", width = 20, height = 10, units="cm", res=800) # wide: 20, not wide: 13
+png("plots/Fig1_focals_20251210.png", width = 15, height = 10, units="cm", res=800) # wide: 20, not wide: 13
 
 ggplot(data = dat_quant) +
   geom_linerange(aes(x = species, y = quant0.9_elev, ymin = quant0.1_elev, ymax = quant0.9_elev), 
@@ -1373,7 +1370,7 @@ ggplot(data = dat_quant) +
   #geom_abline(intercept = elevation_at_predicted_temp_2011, slope = 0, col = "darkred", size = 1.3) +
   #geom_abline(intercept = elevation_at_predicted_temp_2001, slope = 0, col = "#C1C2C7", size = 1) +
   geom_point(aes(x = species_ordered, y = median_elev), size = 4) +
-  geom_point(aes(x = species_ordered, y = max_elev), col = "white", size = 3.5) +
+  geom_point(aes(x = species_ordered, y = max_elev), col = "white", size = 3) +
   geom_point(aes(x = species_ordered, y = max_elev)) +
   #geom_point(aes(x = species, y = min_elev)) +
   #geom_errorbar(aes(x = species, ymin = quant0.1_elev, ymax = quant0.9_elev), width = 0.2) +
@@ -1386,7 +1383,8 @@ ggplot(data = dat_quant) +
   theme(axis.title.x = element_blank(),
         axis.text = element_text(size = 12),
         axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
-        axis.title.y = element_text(size = 14)) +
+        axis.title.y = element_text(size = 12),
+        panel.grid = element_blank()) +
   geom_text(data = label_data, 
             aes(x = species, y = y_position, label = label), 
             size = 4.5, hjust = 0.5, vjust = -1, fontface = "italic") +
