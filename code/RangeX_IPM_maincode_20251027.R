@@ -2152,7 +2152,7 @@ pred_est <- dat_germ_ready %>%
 ### SIZE DEPENDENT
 
 # survival 
-png("plots/FigS3_a_VR_surv_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_a_VR_surv_nolegend_20251210.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,], aes(x = size_t0_log, y = as.numeric(as.character(survival)))) +
   geom_jitter(col = "gray", position = position_jitter(height = 0.05)) +
@@ -2161,7 +2161,8 @@ ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,], aes(x = size_t0_lo
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_text(angle = 90), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "Survival", y = "log(Size at t0)") +
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2182,7 +2183,8 @@ surv_with_legend <- ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,]
   theme(strip.background = element_blank(),
         axis.text.x = element_text(angle = 90), 
         axis.title = element_text(face = "bold", size = 12),
-        legend.position = "top") +
+        legend.position = "top",
+        panel.grid = element_blank()) +
   labs(x = "Survival", y = "log(Size at t0)") +
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2192,10 +2194,10 @@ surv_with_legend <- ggplot(data = pred_surv[is.na(pred_surv$survival) == FALSE,]
 legend <- g_legend(surv_with_legend)
 grid.draw(legend)
 
-ggsave("plots/FigS3_VR_legend_20251027.png", legend, width = 7.2, height = 1, dpi = 300)
+ggsave("plots/FigS3_VR_legend_2021210.png", legend, width = 7.2, height = 1, dpi = 300)
   
 # growth
-png("plots/FigS3_b_VR_grow_nolegend_20251027_census1.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_b_VR_grow_nolegend_20251210_census1.png", width = 24, height = 10, units="cm", res=800)
 #png("plots/FigVR_grow_nolegend_20250929_census2.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_growth[is.na(pred_growth$size_t1_log) == FALSE,], aes(x = size_t0_log, y = size_t1_log)) +
@@ -2205,7 +2207,8 @@ ggplot(data = pred_growth[is.na(pred_growth$size_t1_log) == FALSE,], aes(x = siz
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_text(angle = 90), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "log(Size at t1)", y = "log(Size at t0)") +  
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2218,7 +2221,7 @@ ggplot(data = pred_growth[is.na(pred_growth$size_t1_log) == FALSE,], aes(x = siz
 dev.off()
 
 # flowering
-png("plots/FigS3_c_VR_flow_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_c_VR_flow_nolegend_20251210.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_flower[is.na(pred_flower$flower_status) == FALSE,], aes(x = size_t0_log, y = as.numeric(as.character(flower_status)))) +
   geom_point(col = "gray", position = position_jitter(height = 0.05)) +
@@ -2227,7 +2230,8 @@ ggplot(data = pred_flower[is.na(pred_flower$flower_status) == FALSE,], aes(x = s
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_text(angle = 90), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "log(Size at t1)", y = "Flowering") +  
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2240,7 +2244,7 @@ ggplot(data = pred_flower[is.na(pred_flower$flower_status) == FALSE,], aes(x = s
 dev.off()
 
 # seed production
-png("plots/FigS3_d_VR_seed_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_d_VR_seed_nolegend_20251210.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_seed[is.na(pred_seed$number_seeds) == FALSE,], aes(x = size_t0_log, y = log(number_seeds))) +
   geom_point(col = "gray") +
@@ -2249,7 +2253,8 @@ ggplot(data = pred_seed[is.na(pred_seed$number_seeds) == FALSE,], aes(x = size_t
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_text(angle = 90), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "log(Size at t1)", y = "log(Number of seeds)") +  
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2264,7 +2269,7 @@ dev.off()
 ### SIZE INDEPENDENT
 
 # germination rate
-png("plots/FigS3_e_VR_germ_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_e_VR_germ_nolegend_20251210.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_germ[is.na(pred_germ$germ_rate) == FALSE,], aes(x = treat_combi, y = germ_rate, group = treat_combi)) +
   geom_point(col = "gray") +
@@ -2273,7 +2278,8 @@ ggplot(data = pred_germ[is.na(pred_germ$germ_rate) == FALSE,], aes(x = treat_com
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_blank(), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "Treatment", y = "Germination rate") +  
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2286,7 +2292,7 @@ ggplot(data = pred_germ[is.na(pred_germ$germ_rate) == FALSE,], aes(x = treat_com
 dev.off()
 
 # establishment rate
-png("plots/FigS3_f_VR_etsb_nolegend_20251027.png", width = 24, height = 10, units="cm", res=800)
+png("plots/FigS3_f_VR_etsb_nolegend_20251210.png", width = 24, height = 10, units="cm", res=800)
 
 ggplot(data = pred_est[is.na(pred_est$establishment) == FALSE,], aes(x = treat_combi, y = establishment_plot)) +
   geom_point(col = "gray", position = position_jitter(height = 0.01)) +
@@ -2295,7 +2301,8 @@ ggplot(data = pred_est[is.na(pred_est$establishment) == FALSE,], aes(x = treat_c
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_blank(), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "Treatment", y = "Establishment rate") +  
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
@@ -2311,7 +2318,7 @@ dev.off()
 # RECRUIT SIZE DISTRIBUTION
 
 # recruit size distribution
-png("plots/FigS3_g_VR_rcsz_nolegend_20251027.png", width = 24, height = 5, units="cm", res=800)
+png("plots/FigS3_g_VR_rcsz_nolegend_20251210.png", width = 24, height = 5, units="cm", res=800)
 
 ggplot(data = pred_recruit, aes(x = size_t0_log)) +
   geom_histogram(aes(y = ..density..), bins = 20, fill = "gray", alpha = 0.5) +
@@ -2320,7 +2327,8 @@ ggplot(data = pred_recruit, aes(x = size_t0_log)) +
   theme_bw() +
   theme(strip.background = element_blank(),
         axis.text.x = element_text(angle = 90), 
-        axis.title = element_text(face = "bold", size = 12)) +
+        axis.title = element_text(face = "bold", size = 12),
+        panel.grid = element_blank()) +
   labs(x = "log(Size at t0)", y = "Density") +  
   scale_color_manual(name = "Treatment Combination", 
                      values = treat_combi_site_col, 
