@@ -769,15 +769,14 @@ species_names <- c("brapin" = "Brachypodium\npinnatum", "broere" = "Bromus\nerec
 ## LOAD DATA -------------------------------------------------------------------
 
 # load environmental data
-dat_hobo <- read_csv("data/raw/RangeX_clean_EnvHOBO_2021_2023_CHE.csv") # cleaned data paper hobo data from RangeX experiment 2021 - 2023
-dat_tms4 <- read_csv("data/raw/RangeX_clean_EnvTMS4_2021_2023_CHE.csv")  # cleaned data paper TMS4 data from RangeX experiment 2021 - 2023
+dat_hobo <- read_csv("/Users/mac/Desktop/ETH_Phd+/Projects/RangeX/RangeX_Data/6_DataClean/RangeX_clean_EnvHOBO_2021_2023_CHE.csv") # cleaned data paper hobo data from RangeX experiment 2021 - 2023
+dat_tms4 <- read_csv("/Users/mac/Desktop/ETH_Phd+/Projects/RangeX/RangeX_Data/6_DataClean/RangeX_clean_EnvTMS4_2021_2023_CHE.csv")  # cleaned data paper TMS4 data from RangeX experiment 2021 - 2023
 
 # read vegetation height data
 dat_height <- read_csv("data/raw/RangeX_clean_VegHeight_2023_CHE.csv")
 
 # load Caphe data
-#dat_caphe <- read_csv("/Users/eviseli/Desktop/other projects/Caphe/2024_CAPHE_CleanData_20250306.csv")
-dat_caphe <- read_csv("/yourpath/2024_CAPHE_CleanData_20250306.csv") # this data is not freely available
+dat_caphe <- read_csv("/Users/mac/Desktop/ETH_Phd+/Projects/Others/Caphe/2024_CAPHE_CleanData_20250306.csv") # this data is not freely available
 dat_alti <- read_csv("data/raw/SpeciesAltitudes.csv") # Caphe altitudes provided by Mikko Tiusanen on 21.03.2024
 
 

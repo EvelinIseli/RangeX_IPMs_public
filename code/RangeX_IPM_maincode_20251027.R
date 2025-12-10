@@ -2756,7 +2756,7 @@ hi_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 14),
+    axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 12),
     axis.text.x = element_blank(),
     #axis.ticks = element_blank(),
@@ -2778,9 +2778,10 @@ hi_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
     legend.spacing = unit(-0.5, "lines"),
     #panel.grid.major.x = element_blank(),
     #panel.grid.minor.x = element_blank(),
-    panel.grid = element_blank()
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
   ) +
-  labs(y = "Above range") + # Population growth rate λ\n(log scale)
+  labs(y = "Population growth rate λ (log scale)\n(above range, ambient)") + # Population growth rate λ\n(log scale)
   scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) + #scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
   coord_cartesian(ylim = c(0.15, 25)) +
   #scale_alpha_manual(values = c(0.5, 1)) +
@@ -2820,33 +2821,35 @@ lambda.allcombis.bootpara.bcpi_c1 %>%
 # use upper_BCPI_red here to prevent the error bars showing through for points with reduced opacity --> but only if the errorbars are shorter than the points (manually defined above)
 hi_ambi_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.bootpara.bcpi_c2$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c2$site == "hi",],
        aes(x = species, y = lambda, col = site_treat_combi)) + # , alpha = lambda_sig
-  geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
+  geom_abline(intercept = log(1), slope = 0, linetype = "solid") +
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
   geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), width = 0.2, position = posd) +
-  geom_point(aes(group = treat_comp_fact), position = posd, size = 4, col = "white", fill = "white", alpha = 1) +
-  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 4, fill = "white", stroke = 1.5) +
+  geom_point(aes(group = treat_comp_fact), position = posd, size = 3, col = "white", fill = "white", alpha = 1) +
+  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 3, fill = "white", stroke = 1.5) +
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 14),
+    axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 12),
     axis.text.x = element_blank(),
-    axis.ticks = element_blank(),
     legend.background = element_blank(), 
-    legend.text = element_text(size = 12),
+    legend.text = element_text(size = 10),
     legend.title = element_blank(),
     strip.background = element_blank(),
-    legend.position = c(0.75, 0.99),  # move legend to top-right corner
-    legend.justification = c(1, 1),
-    legend.box = "vertical",  # combine legends vertically into a single box
-    legend.box.background = element_rect(fill = "white", color = "black"),
+    legend.position = c(c(0.4, 1.02)),  
+    legend.justification = c(0, 1),
+    legend.box = "horizontal",  # combine legends vertically into a single box
+    legend.box.background = element_blank(),
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
-    legend.spacing = unit(-0.5, "lines")
+    legend.spacing = unit(-0.5, "lines"),
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
   ) +
-  labs(y = "Population growth rate λ\n(log scale)") +
-  scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
+  labs(y = "Population growth rate λ (log scale)\n(above range, ambient)") +
+  scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) + #scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
+  coord_cartesian(ylim = c(0.1, 25)) +
   #scale_alpha_manual(values = c(0.5, 1)) +
   scale_x_discrete(labels = function(x) species_names[x]) +
   scale_color_manual(
@@ -2858,7 +2861,9 @@ hi_ambi_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.b
     values = c(19, 21),
     labels = c("grow" = expression(paste(lambda, " > 1")), "shrink" = expression(paste(lambda, " < 1"))),
     guide = guide_legend(order = 2)) +
-  guides(alpha = "none", shape = "none") #+
+  guides(alpha = "none") +
+  guides(colour = guide_legend(override.aes = list(size = 2), order = 1),
+         shape = guide_legend(override.aes = list(size = 2), order = 2))
   #facet_wrap(~daucar_facet, scales = "free")
   #geom_text(
   #  data = subset(lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.bootpara.bcpi_c2$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c2$site == "hi",], 
@@ -2878,32 +2883,34 @@ lambda.allcombis.bootpara.bcpi_c2 %>%
 # plot 2: warmed high site
 hi_warm_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "warm" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",],
         aes(x = species, y = lambda, col = site_treat_combi)) + # , alpha = lambda_sig
-   geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
+   geom_abline(intercept = log(1), slope = 0, linetype = "solid") +
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
    geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), position = posd, width = 0.2, alpha = 1) +
-   geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 6,
+   geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 3,
               fill = "white", colour = "white", alpha = 1, stroke = 0) +
-   geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 4, fill = "white", stroke = 1.5) +
+   geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 3, fill = "white", stroke = 1.5) +
    theme_bw() +
    theme(
      axis.title.x = element_blank(),
-     axis.title.y = element_text(size = 14),
+     axis.title.y = element_text(size = 12),
      axis.text = element_text(size = 12),
      axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
      legend.background = element_blank(), 
-     legend.text = element_text(size = 12),
+     legend.text = element_text(size = 10),
      legend.title = element_blank(),
      strip.background = element_blank(),
-     legend.position = c(0.75, 0.99), 
-     legend.justification = c(1, 1),
-     legend.box = "vertical",  # combine legends vertically into a single box
-     legend.box.background = element_rect(fill = "white", color = "black"),
+     legend.position = c(c(0.4, 1.02)),  
+     legend.justification = c(0, 1),
+     legend.box = "horizontal",  # combine legends vertically into a single box
+     legend.box.background = element_blank(),
      #legend.key.size = unit(1.5, "lines"),
      #legend.key.width = unit(1.5, "lines"),
-     legend.spacing = unit(-0.5, "lines")
+     legend.spacing = unit(-0.5, "lines"),
+     panel.grid = element_blank(),
+     plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
      ) +
-   labs(y = "Population growth rate λ\n(log scale)") +
+   labs(y = "Population growth rate λ (log scale)\n(above range, warmed)") +
    scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
    #scale_alpha_manual(values = c(0.5, 1)) +
    scale_x_discrete(labels = function(x) species_names[x]) +
@@ -2915,7 +2922,9 @@ hi_warm_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
       values = c(19, 21),
       labels = c("grow" = expression(paste(lambda, " > 1")), "shrink" = expression(paste(lambda, " < 1"))),
       guide = guide_legend(order = 2)) +
-   guides(alpha = "none") # , shape = "none"
+   guides(alpha = "none") + # , shape = "none"
+  guides(shape = guide_legend(override.aes = list(size = 2), order = 2),
+         colour = guide_legend(override.aes = list(size = 2), order = 1))
  
 #dev.off()
 
@@ -2928,34 +2937,36 @@ lambda.allcombis.bootpara.bcpi_c1 %>%
 
 hi_warm_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.bootpara.bcpi_c2$treat_warm == "warm" & lambda.allcombis.bootpara.bcpi_c2$site == "hi",],
                   aes(x = species, y = lambda, col = site_treat_combi, shape = trend)) + # alpha = lambda_sig, 
-  geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
+  geom_abline(intercept = log(1), slope = 0, linetype = "solid") +
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
   geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), position = posd, width = 0.2, alpha = 1) +
-  geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 6,
+  geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 3,
              fill = "white", colour = "white", alpha = 1, stroke = 0) +
-  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 4, fill = "white", stroke = 1.5) +
+  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 3, fill = "white", stroke = 1.5) +
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 14),
+    axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 12),
     axis.text.x = element_blank(),
-    axis.ticks = element_blank(),
     legend.background = element_blank(), 
-    legend.text = element_text(size = 12),
+    legend.text = element_text(size = 10),
     legend.title = element_blank(),
     strip.background = element_blank(),
-    legend.position = c(0.75, 0.475), 
-    legend.justification = c(1, 1),
-    legend.box = "vertical",  # combine legends vertically into a single box
-    legend.box.background = element_rect(fill = "white", color = "black"),
+    legend.position = c(c(0.4, 1.02)),  
+    legend.justification = c(0, 1),
+    legend.box = "horizontal",  # combine legends vertically into a single box
+    legend.box.background = element_blank(),
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
-    legend.spacing = unit(-0.5, "lines")
+    legend.spacing = unit(-0.5, "lines"),
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
   ) +
-  labs(y = "Population growth rate λ\n(log scale)") +
-  scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
+  labs(y = "Population growth rate λ (log scale)\n(above range, warmed)") +
+  scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) + #scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
+  coord_cartesian(ylim = c(0.1, 25)) +
   scale_x_discrete(labels = function(x) species_names[x]) +
   scale_color_manual(
     values = treat_combi_site_col,
@@ -2965,7 +2976,8 @@ hi_warm_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.b
     values = c(19, 21),
     labels = c("grow" = expression(paste(lambda, " > 1")), "shrink" = expression(paste(lambda, " < 1"))),
     guide = guide_legend(order = 2)) +
-  guides(alpha = "none") # , shape = "none"
+  guides(alpha = "none", shape = "none") + # , shape = "none"
+  guides(colour = guide_legend(override.aes = list(size = 2), order = 1))
 
 # display all non-significantly different lambdas from 1
 lambda.allcombis.bootpara.bcpi_c2 %>%
@@ -2977,7 +2989,7 @@ lambda.allcombis.bootpara.bcpi_c2 %>%
 # plot 3: ambient low site
 lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "lo",],
        aes(x = species, y = lambda, col = site_treat_combi, shape = trend)) + # , alpha = lambda_sig
-  geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
+  geom_abline(intercept = log(1), slope = 0, linetype = "solid") +
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
   geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), position = posd, width = 0.2, alpha = 1) +
@@ -2987,7 +2999,7 @@ lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 14),
+    axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 12), 
     axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
     #axis.ticks = element_blank(),
@@ -3002,9 +3014,10 @@ lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
     legend.spacing = unit(-0.5, "lines"),
-    panel.grid = element_blank()
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
   ) +
-  labs(y = "Within range") + # Population growth rate λ\n(log scale)
+  labs(y = "Population growth rate λ (log scale)\n(within range, ambient)") + # Population growth rate λ\n(log scale)
   #scale_alpha_manual(values = c(0.5, 1)) +
   scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) +
   coord_cartesian(ylim = c(0.15, 25)) +
@@ -3032,33 +3045,35 @@ lambda.allcombis.bootpara.bcpi_c1 %>%
 
 lo_ambi_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.bootpara.bcpi_c2$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c2$site == "lo",],
                      aes(x = species, y = lambda, col = site_treat_combi, shape = trend)) + # alpha = lambda_sig, 
-  geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
+  geom_abline(intercept = log(1), slope = 0, linetype = "solid") +
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
   geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), position = posd, width = 0.2, alpha = 1) +
-  geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 6,
+  geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 3,
              fill = "white", colour = "white", alpha = 1, stroke = 0) +
-  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 4, fill = "white", stroke = 1.5) +
+  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 3, fill = "white", stroke = 1.5) +
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 14),
+    axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 12),
     axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
     #axis.ticks = element_blank(),
     legend.background = element_blank(), 
-    legend.text = element_text(size = 12),
+    legend.text = element_text(size = 10),
     legend.title = element_blank(),
     strip.background = element_blank(),
-    legend.position = c(0.75, 0.99),  # move legend to top-right corner
-    legend.justification = c(1, 1),
+    legend.position = c(c(0.4, 1.02)),  
+    legend.justification = c(0, 1),
     legend.box = "vertical",  # combine legends vertically into a single box
-    legend.box.background = element_rect(fill = "white", color = "black"),
+    legend.box.background = element_blank(),
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
-    legend.spacing = unit(-0.5, "lines")
+    legend.spacing = unit(-0.5, "lines"),
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
   ) +
-  labs(y = "Population growth rate λ\n(log scale)") +
+  labs(y = "Population growth rate λ (log scale)\n(within range, ambient)") +
   #scale_alpha_manual(values = c(0.5, 1)) +
   scale_x_discrete(labels = function(x) species_names[x]) +
   scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) +
@@ -3072,7 +3087,8 @@ lo_ambi_c2 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c2[lambda.allcombis.b
     values = c(19, 21),
     labels = c("grow" = expression(paste(lambda, " > 1")), "shrink" = expression(paste(lambda, " < 1"))),
     guide = guide_legend(order = 2)) +
-  guides(alpha = "none", shape = "none")
+  guides(alpha = "none", shape = "none") +
+  guides(colour = guide_legend(override.aes = list(size = 2), order = 1))
 
 # display all non-significantly different lambdas from 1
 lambda.allcombis.bootpara.bcpi_c2 %>%
@@ -3089,15 +3105,14 @@ png("plots/Fig2_ab_PGRhiambilo_census1_20251210.png", width = 15, height = 20, u
 hi_ambi_c1 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
   lo_ambi_c1 + 
-  plot_layout(ncol = 1) +   
-  plot_annotation(tag_levels = "A",
-                  left = "Population growth rate λ (log scale)") + 
+  plot_layout(ncol = 1, heights = c(1, 1)) +   
+  plot_annotation(tag_levels = "A") + 
   theme(plot.tag = element_text(face = "bold", size = 16))
 
 dev.off()
 
 # Panel c for Figure SX: hi warm (census 1)
-png("plots/FigSX_c_PGRhiwarm_census1_20251206.png", , width = 17, height = 10, units="cm", res=800)
+png("plots/FigSX_c_PGRhiwarm_census1_20251210.png", , width = 15, height = 10, units="cm", res=800)
 
 hi_warm_c1 
 
@@ -3105,7 +3120,7 @@ dev.off()
 
 # Figure SX: hi ambi, hi warm and lo ambi (census 2)
 
-png("plots/FigS1_abc_PGRhiambiwarmlo_census2_20251206.png", width = 17, height = 25, units="cm", res=800)
+png("plots/FigS1_abc_PGRhiambiwarmlo_census2_20251210.png", width = 15, height = 25, units="cm", res=800)
 
 hi_ambi_c2 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
@@ -3185,7 +3200,7 @@ lab_pad <- 0.04 * diff(lims) # where to place the in-figure labels
 
 
 # plot ambient vs. warmed growth rate
-png("plots/Fig3_ab_PGRambivswarm_census1_20251206.png", width = 17, height = 10, units="cm", res=800)
+png("plots/Fig3_ab_PGRambivswarm_census1_20251210.png", width = 15, height = 10, units="cm", res=800)
 
 ggplot(data = lambda.allcombis_c1_hi_widewarm ,
        aes(x = lambda.ambi, y = lambda.warm)) +
@@ -3204,20 +3219,22 @@ ggplot(data = lambda.allcombis_c1_hi_widewarm ,
   theme_bw() +
   facet_grid(~ treat_comp, labeller = as_labeller(c("bare" = "without competition", "vege" = "with competition"))) + # , scales = "free"
   theme(
-    axis.title = element_text(size = 14),
+    axis.title = element_text(size = 12),
     axis.text = element_text(size = 12),
     strip.background = element_blank(),
-    strip.text = element_text(size = 14)
+    strip.text = element_text(size = 12),
+    panel.grid = element_blank(),
+    plot.margin = margin(t = 1, r = 5, b = 1, l = 5)
   ) +
-  labs(x = "Population growth rate λ (ambient)",
-       y = "Population growth rate λ\n(warmed)") +
+  labs(x = "Population growth rate λ (above range, ambient)",
+       y = "Population growth rate λ\n(above range, warmed)") +
   coord_equal(xlim = lims, ylim = lims, expand = FALSE) +
   annotate("text", x = lims[1] + lab_pad, y = lims[2] - lab_pad,
            label = "warming increases \u03BB", hjust = 0, vjust = 1,
-           size = 5, colour = "#C17C0F", fontface = "bold") +
+           size = 4, colour = "#C17C0F", fontface = "bold") +
   annotate("text", x = lims[2] - lab_pad, y = lims[1] + lab_pad,
            label = "warming decreases \u03BB", hjust = 1, vjust = 0,
-           size = 5, colour = "#5B7D6D", fontface = "bold") 
+           size = 4, colour = "#5B7D6D", fontface = "bold") 
 
 dev.off()
 
@@ -3622,7 +3639,7 @@ popsize.allcombis.bootpara.bcpi$species <- factor(popsize.allcombis.bootpara.bcp
 popsize_bootpara_selected_long$species <- factor(popsize_bootpara_selected_long$species, levels = spec_startposize)
 
 # plot
-png("plots/Fig4b_SPShiambi_20250127.png",  width = 10, height = 10, units="cm", res=800)
+png("plots/Fig4_SPShiambi_20251210.png",  width = 10, height = 10, units="cm", res=800)
 
 ggplot(data = popsize.allcombis.bootpara.bcpi, 
                         aes(x = species, y = required_seeds)) +
@@ -3634,7 +3651,7 @@ ggplot(data = popsize.allcombis.bootpara.bcpi,
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 14),
+    axis.title.y = element_text(size = 12),
     axis.text = element_text(size = 12),
     axis.text.x = element_text(hjust = 1, vjust = 0.3, angle = 90, face = "italic"),
     #axis.ticks = element_blank(),
@@ -3645,10 +3662,11 @@ ggplot(data = popsize.allcombis.bootpara.bcpi,
     legend.position = c(0.95, 0.95),  # move legend to top-right corner
     legend.justification = c(1, 1),
     legend.box = "vertical",  # combine legends vertically into a single box
-    legend.box.background = element_rect(fill = "white", color = "black"),
+    legend.box.background = element_blank(),
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
-    legend.spacing = unit(-0.5, "lines")) +
+    legend.spacing = unit(-0.5, "lines"),
+    panel.grid = element_blank()) +
   labs(y = "Number of seeds") +
   #facet_wrap(~ species, scales = "free") +
   #geom_abline(intercept = 10, slope = 0, col = "blue") +
