@@ -2560,22 +2560,6 @@ write.csv(bootpara_wide, "data/derived/IPM_bootstrappedVR_para_cluster_c1.csv")
 #write.csv(bootpara_wide, "data/derived/IPM_bootstrappedVR_para_cluster.csv")
 
 
-### CLEAN SAVE UP TO CLUSTER CENSUS 1 **************************************----
-
-#save.image(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
-#load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20251027_census1.RData")
-
-### ************************************************************************----
-
-### CLEAN SAVE UP TO CLUSTER CENSUS 2 **************************************----
-
-#save.image(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20250930_census2.RData")
-#load(file = "/Users/eviseli/Desktop/SaveImageR/IPMs_20250930_census2.RData")
-
-### ************************************************************************----
-
-
-
 ### cluster code ---------------------------------------------------------------
 
 # The bootstrapped lambda calculations are done on the cluster. See file RangeX_IPMs_clustercode_20251027.R for code used.
@@ -2763,39 +2747,42 @@ x_pos <- max(lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1
 # use upper_BCPI_red here to prevent the error bars showing through for points with reduced opacity --> but only if the errorbars are shorter than the points (manually defined above)
 hi_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.bootpara.bcpi_c1$treat_warm == "ambi" & lambda.allcombis.bootpara.bcpi_c1$site == "hi",],
        aes(x = species, y = lambda, col = site_treat_combi)) + # , alpha = lambda_sig
-  geom_abline(intercept = log(1), slope = 0, linetype = "dashed") +
+  geom_abline(intercept = log(1), slope = 0) + # , linetype = "dashed"
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
   geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), width = 0.2, position = posd) +
   geom_point(aes(group = treat_comp_fact), position = posd, size = 4, col = "white", fill = "white", alpha = 1) +
-  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 4, fill = "white", stroke = 1.5) +
+  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 3, fill = "white", stroke = 1.5) +
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
     axis.title.y = element_text(size = 14),
     axis.text = element_text(size = 12),
     axis.text.x = element_blank(),
-    axis.ticks = element_blank(),
+    #axis.ticks = element_blank(),
     #axis.title.x = element_blank(),
     #axis.title.y = element_text(size = 14),
     #axis.text = element_text(size = 12),
     #axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
     #axis.ticks = element_blank(),
     legend.background = element_blank(), 
-    legend.text = element_text(size = 12),
+    legend.text = element_text(size = 10), # size = 12
     legend.title = element_blank(),
     strip.background = element_blank(),
-    legend.position = c(0.75, 0.99),  
-    legend.justification = c(1, 1),
-    legend.box = "vertical",  # combine legends vertically into a single box
-    legend.box.background = element_rect(fill = "white", color = "black"),
+    legend.position = c(c(0.4, 1.02)),  
+    legend.justification = c(0, 1),
+    legend.box = "horizontal",  # combine legends vertically into a single box
+    legend.box.background = element_blank(), # , color = "black"
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
-    legend.spacing = unit(-0.5, "lines")
+    legend.spacing = unit(-0.5, "lines"),
+    #panel.grid.major.x = element_blank(),
+    #panel.grid.minor.x = element_blank(),
+    panel.grid = element_blank()
   ) +
-  labs(y = "Population growth rate λ\n(log scale)") +
-  scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
-  #coord_cartesian(ylim = c(0.4, 8)) + # not needed as n.s. is alright
+  labs(y = "Above range") + # Population growth rate λ\n(log scale)
+  scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) + #scale_y_log10(breaks = c(0.5, 1, 2, 3, 5, 7), labels = c("0.5", "1", "2", "3", "5", "7")) +
+  coord_cartesian(ylim = c(0.15, 25)) +
   #scale_alpha_manual(values = c(0.5, 1)) +
   scale_x_discrete(labels = function(x) species_names[x]) +
   scale_color_manual(
@@ -2815,8 +2802,10 @@ hi_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
   #                lambda_sig == "n-sig."),   # non-significant only
   #  aes(x = species, y = lambda, label = "n.s.", group = treat_comp_fact),
   #  position = posd2, size = 4, vjust = 2.2, hjust = -0.1, show.legend = FALSE, col = "black") +
-  annotate("text",x = 0.6, y = 1.05, label = "Establishment succeeds", hjust = 0, vjust = 0, size = 4) +
-  annotate("text", x = 0.6, y = 0.95, label = "Establishment fails", hjust = 0, vjust = 1, size = 4)
+  annotate("text",x = 0.6, y = 1.05, label = "Establishment succeeds", hjust = 0, vjust = 0, size = 2.5) +
+  annotate("text", x = 0.6, y = 0.95, label = "Establishment fails", hjust = 0, vjust = 1, size = 2.5) +
+  guides(shape = guide_legend(override.aes = list(size = 2), order = 2),
+         colour = guide_legend(override.aes = list(size = 2), order = 1))
 
 #dev.off()
 
@@ -2992,29 +2981,30 @@ lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
   geom_line(aes(group = species), 
             linewidth = 0.3, alpha = 0.8, position = posd2, col = "black") +
   geom_errorbar(aes(ymin = lower_BCPI, ymax = upper_BCPI, group = treat_comp_fact), position = posd, width = 0.2, alpha = 1) +
-  geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 6,
+  geom_point(aes(group = treat_comp_fact), position = posd, shape = 21, size = 3,
              fill = "white", colour = "white", alpha = 1, stroke = 0) +
-  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 4, fill = "white", stroke = 1.5) +
+  geom_point(aes(shape = trend, group = treat_comp_fact), position = posd, size = 3, fill = "white", stroke = 1.5) +
   theme_bw() +
   theme(
     axis.title.x = element_blank(),
     axis.title.y = element_text(size = 14),
-    axis.text = element_text(size = 12),
+    axis.text = element_text(size = 12), 
     axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
     #axis.ticks = element_blank(),
     legend.background = element_blank(), 
-    legend.text = element_text(size = 12),
+    legend.text = element_text(size = 10),
     legend.title = element_blank(),
     strip.background = element_blank(),
-    legend.position = c(0.75, 0.99),  # move legend to top-right corner
-    legend.justification = c(1, 1),
+    legend.position = c(0.4, 1.02),  
+    legend.justification = c(0, 1),
     legend.box = "vertical",  # combine legends vertically into a single box
-    legend.box.background = element_rect(fill = "white", color = "black"),
+    legend.box.background = element_blank(),
     #legend.key.size = unit(1.5, "lines"),
     #legend.key.width = unit(1.5, "lines"),
-    legend.spacing = unit(-0.5, "lines")
+    legend.spacing = unit(-0.5, "lines"),
+    panel.grid = element_blank()
   ) +
-  labs(y = "Population growth rate λ\n(log scale)") +
+  labs(y = "Within range") + # Population growth rate λ\n(log scale)
   #scale_alpha_manual(values = c(0.5, 1)) +
   scale_y_log10(breaks = c(0.5, 1, 2, 5, 10, 20), labels = c("0.5", "1", "2", "5", "10", "20")) +
   coord_cartesian(ylim = c(0.15, 25)) +
@@ -3028,8 +3018,8 @@ lo_ambi_c1 <- ggplot(data = lambda.allcombis.bootpara.bcpi_c1[lambda.allcombis.b
     values = c(19, 21),
     labels = c("grow" = expression(paste(lambda, " > 1")), "shrink" = expression(paste(lambda, " < 1"))),
     guide = guide_legend(order = 2)) +
-  guides(alpha = "none", shape = "none") #+
-  #ylim(0, 30)
+  guides(alpha = "none", shape = "none") +
+  guides(colour = guide_legend(override.aes = list(size = 2))) # +
   #annotate("text",x = Inf, y = 1.05, label = "Establishment succeeds", hjust = 3.4, vjust = 0, size = 4) +
   #annotate("text", x = Inf, y = 0.95, label = "Establishment fails", hjust = 4.4, vjust = 1, size = 4)
 
@@ -3094,13 +3084,14 @@ lambda.allcombis.bootpara.bcpi_c2 %>%
 
 # combine the plots 
 
-png("plots/Fig2_ab_PGRhiambilo_census1_20251206.png", width = 17, height = 17, units="cm", res=800)
+png("plots/Fig2_ab_PGRhiambilo_census1_20251210.png", width = 15, height = 20, units="cm", res=800)
 
 hi_ambi_c1 + 
   theme(plot.tag = element_text(face = "bold", size = 16)) +
   lo_ambi_c1 + 
   plot_layout(ncol = 1) +   
-  plot_annotation(tag_levels = "A") + 
+  plot_annotation(tag_levels = "A",
+                  left = "Population growth rate λ (log scale)") + 
   theme(plot.tag = element_text(face = "bold", size = 16))
 
 dev.off()
