@@ -18,6 +18,8 @@
 
 rm(list = ls())
 
+#setwd("/Volumes/ExtDesktop/ETH_Phd+/Github/GitHub/RangeX_IPMs_public")
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # 1) DATA PREPARATION & ALLOMETRIC MODELS ----
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -769,22 +771,26 @@ species_names <- c("brapin" = "Brachypodium\npinnatum", "broere" = "Bromus\nerec
 ## LOAD DATA -------------------------------------------------------------------
 
 # load environmental data
-dat_hobo <- read_csv("/Users/mac/Desktop/ETH_Phd+/Projects/RangeX/RangeX_Data/6_DataClean/RangeX_clean_EnvHOBO_2021_2023_CHE.csv") # cleaned data paper hobo data from RangeX experiment 2021 - 2023
-dat_tms4 <- read_csv("/Users/mac/Desktop/ETH_Phd+/Projects/RangeX/RangeX_Data/6_DataClean/RangeX_clean_EnvTMS4_2021_2023_CHE.csv")  # cleaned data paper TMS4 data from RangeX experiment 2021 - 2023
+dat_hobo <- read_csv("data/raw/RangeX_clean_EnvHOBO_2021_2023_CHE.csv") # cleaned data paper hobo data from RangeX experiment 2021 - 2023
+dat_tms4 <- read_csv("data/raw/RangeX_clean_EnvTMS4_2021_2023_CHE.csv")  # cleaned data paper TMS4 data from RangeX experiment 2021 - 2023
 
 # read vegetation height data
 dat_height <- read_csv("data/raw/RangeX_clean_VegHeight_2023_CHE.csv")
 
 # load Caphe data
-dat_caphe <- read_csv("/Users/mac/Desktop/ETH_Phd+/Projects/Others/Caphe/2024_CAPHE_CleanData_20250306.csv") # this data is not freely available
+#dat_caphe <- read_csv("/Users/eviseli/Desktop/other projects/Caphe/2024_CAPHE_CleanData_20250306.csv")
+dat_caphe <- read_csv("/yourpath/2024_CAPHE_CleanData_20250306.csv") # this data is not freely available
 dat_alti <- read_csv("data/raw/SpeciesAltitudes.csv") # Caphe altitudes provided by Mikko Tiusanen on 21.03.2024
 
 
 # load macroclimate data (not provided --> )
-dat_clim <- terra::rast("data/raw/terra_final.tif")
-dat_clim_int <- terra::rast("data/raw/terra_final_integrated.tif")
+dat_clim <- terra::rast("/Volumes/ExtDesktop/Downloaded_Data/TerraClimate/terra_final.tif")
+dat_clim_int <- terra::rast("/Volumes/ExtDesktop/Downloaded_Data/TerraClimate/terra_final_integrated.tif")
 calanda_1 <- st_read("data/raw/study_region_2024.shp") # shapefile of study region 2024 (received from Billur Jan 2025)
 calanda_2 <- st_read("data/raw/study_region.shp") # shapefile of study region 2023 (received from Billur Jan 2025)
+
+calanda_1 <- st_read("/Volumes/ExtDesktop/Downloaded_Data/for_Evelin/data/mask/study_region_2024.shp") # shapefile of study region 2024 (received from Billur Jan 2025)
+calanda_2 <- st_read("/Volumes/ExtDesktop/Downloaded_Data/for_Evelin/data/mask/study_region.shp") # shapefile of study region 2023 (received from Billur Jan 2025)
 
 dem <- rast("/Volumes/ExtDesktop/Downloaded_Data/for_Evelin/data/topography/DEM.tif") # altitudes compiled by Billur from https://earthexplorer.usgs.gov/ (received Jan 2025)
 
@@ -837,11 +843,26 @@ daily_sun_mean <- dat_hobo2 %>%
   ungroup() %>%
   mutate(site_warm = paste(site, treat_warm, sep = "."))
 
+# calculate minimum per day
+daily_sun_min <- dat_hobo2 %>%
+  group_by(site, treat_comp, treat_warm, date) %>%
+  summarize(daily_sun_min = min(temperature)) %>%
+  ungroup() %>%
+  mutate(site_warm = paste(site, treat_warm, sep = "."))
+
 # calculate mean per day, but combined over years
 daily_sun_mean_yearly <- dat_hobo2 %>%
   mutate(date_day = format(as.Date(date), "%m-%d")) %>%
   group_by(site, treat_comp, treat_warm, date_day) %>%
   summarize(daily_sun_mean_yearly = mean(temperature)) %>%
+  ungroup() %>%
+  mutate(site_warm = paste(site, treat_warm, sep = "."))
+
+# calculate minimum per day, but combined over years
+daily_sun_min_yearly <- dat_hobo2 %>%
+  mutate(date_day = format(as.Date(date), "%m-%d")) %>%
+  group_by(site, treat_comp, treat_warm, date_day) %>%
+  summarize(daily_sun_min_yearly = min(temperature)) %>%
   ungroup() %>%
   mutate(site_warm = paste(site, treat_warm, sep = "."))
 
@@ -1066,8 +1087,16 @@ daily_sun_mean_yearly$date_day <- as.Date(daily_sun_mean_yearly$date_day, format
 daily_sun_mean_yearly_plot <- daily_sun_mean_yearly %>%
   filter(format(date_day, "%m-%d") > "05-01" & format(date_day, "%m-%d") < "10-01")
 
-# FIGURE S2
-png("plots/FigS_EnvDat_20251027.png", width = 17, height = 17, units="cm", res=800)
+# daily minimum for different treatments (only 1 year)
+daily_sun_min_yearly$date_day <- as.Date(daily_sun_min_yearly$date_day, format = "%m-%d")
+daily_sun_min_yearly_plot <- daily_sun_min_yearly %>%
+  filter(format(date_day, "%m-%d") > "05-01" & format(date_day, "%m-%d") < "10-01")
+
+# labels
+panel_labels <- data.frame(site = c("hi", "lo"), label = c("A", "B"))
+
+# FIGURE S3 - MEAN
+png("plots/FigS_EnvDat_mean_20260906.png", width = 17, height = 17, units="cm", res=800)
 
 ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y = daily_sun_mean_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
   #geom_point()
@@ -1094,8 +1123,10 @@ ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y = daily_sun_mean_ye
                         values = c("solid", "longdash")) +
   scale_x_date(breaks = seq(from = min(daily_sun_mean_yearly$date_day), to = max(daily_sun_mean_yearly$date_day), by = "1 month"),  # Set breaks for every month
                labels = scales::date_format("%b")) +
-  guides(linetype = "none", colour = "none") +
-  facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right")
+  guides(colour = "none") +
+  scale_linetype_manual(labels = c("bare soil", "vegetation"),values = c("solid", "longdash")) +
+  facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right") +
+  geom_text(data = panel_labels, aes(x = -Inf, y = Inf, label = label), inherit.aes = FALSE, hjust = -0.3, vjust = 1.3, fontface = "bold", size = 7)
 
 dev.off()
 
@@ -1132,7 +1163,43 @@ hobo_with_legend <- ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y
 
 legend <- g_legend(hobo_with_legend)
 
-ggsave("plots/FigS_EnvDat_legend_20251027.png", legend, width = 9, height = 1, dpi = 300)
+ggsave("plots/FigS_EnvDat_legend_20260906.png", legend, width = 9, height = 1, dpi = 300)
+
+# FIGURE S3 - MINIMUM
+
+png("plots/FigS_EnvDat_min_20260906.png", width = 17, height = 17, units="cm", res=800)
+
+ggplot(dat = daily_sun_min_yearly_plot, aes(x = date_day, y = daily_sun_min_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
+  #geom_point()
+  geom_line() +
+  labs(x = "Month", y = "Mean Daytime Temperature") +
+  theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  theme_bw() +
+  #facet_wrap(~site, scales = "free") +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.text = element_text(face="italic", size = 12),
+        axis.title = element_text(face = "bold", size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12)) +
+  #stat_summary(aes(group=focalorigin), fun=mean, geom="line", size = 3)
+  scale_colour_manual(values=c("#4D531B", "#4D531B", "#244B71"),
+                      #breaks = c("#4D531B", "#244B71"),
+                      labels = c("beyond-range site", "beyond-range site", "within-range site")) +
+  scale_linetype_manual(labels = c("bare soil",
+                                   "vegetation"),
+                        values = c("solid", "longdash")) +
+  scale_x_date(breaks = seq(from = min(daily_sun_min_yearly$date_day), to = max(daily_sun_min_yearly$date_day), by = "1 month"),  # Set breaks for every month
+               labels = scales::date_format("%b")) +
+  guides(colour = "none") +
+  scale_linetype_manual(labels = c("bare soil", "vegetation"),values = c("solid", "longdash")) +
+  facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right") +
+  geom_text(data = panel_labels, aes(x = -Inf, y = Inf, label = label), inherit.aes = FALSE, hjust = -0.3, vjust = 1.3, fontface = "bold", size = 7)
+
+dev.off()
 
 
 ### TMS4
