@@ -13,3 +13,7 @@ data/raw/RangeX_clean_EnvHOBO_*.csv
 # large outputs
 output/IPM_BootparaLong_mixed_*.csv
 Plotting_Jake.R
+
+# macOS metadata
+.DS_Store
+._*
