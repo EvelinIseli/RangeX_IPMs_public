@@ -779,7 +779,8 @@ dat_height <- read_csv("data/raw/RangeX_clean_VegHeight_2023_CHE.csv")
 
 # load Caphe data
 #dat_caphe <- read_csv("/Users/eviseli/Desktop/other projects/Caphe/2024_CAPHE_CleanData_20250306.csv")
-dat_caphe <- read_csv("/yourpath/2024_CAPHE_CleanData_20250306.csv") # this data is not freely available
+#dat_caphe <- read_csv("data/raw/2024_CAPHE_CleanData_20250306.csv") # this data is not freely available (data used before 20.09.2026)
+dat_caphe <- read_csv("data/raw/2025_CAPHE_CleanData_20251227.csv") # this data is not freely available (new data after 20.09.2026, as published in paper by Mikko Tiusanen)
 dat_alti <- read_csv("data/raw/SpeciesAltitudes.csv") # Caphe altitudes provided by Mikko Tiusanen on 21.03.2024
 
 
@@ -1228,7 +1229,7 @@ t.test(daily_sun_mean_tms4_hi[daily_sun_mean_tms4_hi$treat_warm == "warm" & dail
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # how many plots in Caphe?
-length(unique(dat_caphe$plot_id))
+length(unique(dat_caphe$plot_id)) # 634
 
 max(dat_caphe$altitude_max, na.rm = TRUE)
 min(dat_caphe$altitude_min, na.rm = TRUE)
@@ -1244,7 +1245,7 @@ unique(dat_focal$taxon_CH)
 dat_focal <- dat_focal %>%
   rename("taxon_name" = "taxon_CH")
 
-# check out Sielene
+# check out Silene
 unique(dat_caphe[grepl("Sil", dat_caphe$taxon_CH),]$taxon_CH) # two Silene vulgaris varieties
 
 # change names (combine Brachypodium pinnatum (L.) P. Beauv. and Brachypodium pinnatum aggr. as well as Centaurea jacea L. and Centaurea jacea aggr.)
