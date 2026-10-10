@@ -1424,10 +1424,10 @@ label_data <- no_occ %>%
   mutate(y_position = 420, 
          label = paste(count))
 
-sp_order <- c("daucar", "medlup", "cenjac", "hypper", "plamed", "broere", "salpra", "scacol", "silvul", "brapin")
+sp_order <- c("daucar", "cenjac", "medlup", "hypper", "broere", "plamed", "salpra", "scacol", "silvul", "brapin")
 dat_quant$species <- factor(dat_quant$species, levels = sp_order)
 
-png("plots/Fig1_focals_20251210.png", width = 15, height = 10, units="cm", res=800) # wide: 20, not wide: 13
+png("plots/Fig1_focals_angle_20261010.png", width = 15, height = 10, units="cm", res=800) # wide: 20, not wide: 13
 
 ggplot(data = dat_quant) +
   geom_linerange(aes(x = species, y = quant0.9_elev, ymin = quant0.1_elev, ymax = quant0.9_elev), 
@@ -1450,7 +1450,8 @@ ggplot(data = dat_quant) +
   ) +
   theme(axis.title.x = element_blank(),
         axis.text = element_text(size = 12),
-        axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
+        #axis.text.x = element_text(hjust = 1, vjust = 0.5, angle = 90, face = "italic"),
+        axis.text.x = element_text(hjust = 1.2, vjust = 1.1, angle = 60, face = "italic"),
         axis.title.y = element_text(size = 12),
         panel.grid = element_blank()) +
   geom_text(data = label_data, 
