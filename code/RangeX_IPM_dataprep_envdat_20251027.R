@@ -867,6 +867,24 @@ daily_sun_min_yearly <- dat_hobo2 %>%
   ungroup() %>%
   mutate(site_warm = paste(site, treat_warm, sep = "."))
 
+# daily mean per day, preserving the actual dates and years
+daily_sun_mean_all_years <- dat_hobo2 %>%
+  group_by(site, treat_comp, treat_warm, date) %>%
+  summarize(
+    daily_sun_mean = mean(temperature, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(site_warm = paste(site, treat_warm, sep = "."))
+
+# daily minimum per day, preserving the actual dates and years
+daily_sun_min_all_years <- dat_hobo2 %>%
+  group_by(site, treat_comp, treat_warm, date) %>%
+  summarize(
+    daily_sun_min = min(temperature, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  mutate(site_warm = paste(site, treat_warm, sep = "."))
+
 # calculate difference between warmed and not warmed at high site
 daily_sun_mean_diff <- daily_sun_mean %>%
   filter(site == "hi") %>%
@@ -1086,20 +1104,51 @@ no_loggers <- dat_tms4 %>%
 # daily mean for different treatments (only 1 year)
 daily_sun_mean_yearly$date_day <- as.Date(daily_sun_mean_yearly$date_day, format = "%m-%d")
 daily_sun_mean_yearly_plot <- daily_sun_mean_yearly %>%
-  filter(format(date_day, "%m-%d") > "05-01" & format(date_day, "%m-%d") < "10-01")
+  filter(format(date_day, "%m-%d") >= "05-01" & format(date_day, "%m-%d") <= "10-01")
 
 # daily minimum for different treatments (only 1 year)
 daily_sun_min_yearly$date_day <- as.Date(daily_sun_min_yearly$date_day, format = "%m-%d")
 daily_sun_min_yearly_plot <- daily_sun_min_yearly %>%
   filter(format(date_day, "%m-%d") > "05-01" & format(date_day, "%m-%d") < "10-01")
 
+# daily mean for all years (May–October), plus creating continuous plotting date with October - May directly one after the other
+daily_sun_mean_all_years_plot <- daily_sun_mean %>%
+  filter(format(date, "%m-%d") >= "05-01" &
+           format(date, "%m-%d") <= "10-01") %>%
+  mutate(year = lubridate::year(date),
+         season_day = as.integer(date - as.Date(paste0(year, "-05-01"))),
+         plot_date = as.Date("2000-05-01") +
+           season_day + 154 * (year - min(year)))
+
+# daily minimum for all years (May–October)
+daily_sun_min_all_years_plot <- daily_sun_min %>%
+  filter(format(date, "%m-%d") >= "05-01" &
+           format(date, "%m-%d") <= "10-01") %>%
+  mutate(year = lubridate::year(date),
+         season_day = as.integer(date - as.Date(paste0(year, "-05-01"))),
+         plot_date = as.Date("2000-05-01") +
+           season_day + 154 * (year - min(year)))
+
 # labels
 panel_labels <- data.frame(site = c("hi", "lo"), label = c("A", "B"))
+panel_labels_min <- data.frame(site = c("hi", "lo"), label = c("C", "D"))
+
+# make month breaks and labels for each growing season (centered within each month)
+years <- sort(unique(daily_sun_mean_all_years_plot$year))
+
+month_breaks <- as.Date(unlist(lapply(seq_along(years),
+                                      function(i) {season_start <- as.Date("2000-05-01") + 154 * (i - 1)
+                                      season_start + c(15, 46, 76, 107, 137)
+                                      })), origin = "1970-01-01")
+
+month_labels <- rep(c("May", "Jun", "Jul", "Aug", "Sep"),times = length(years))
+
+year_labels <- rep(years, each = 5)
 
 # FIGURE S3 - MEAN
-png("plots/FigS_EnvDat_mean_20260906.png", width = 17, height = 17, units="cm", res=800)
+#png("plots/FigS_EnvDat_mean_20261026.png", width = 17, height = 17, units="cm", res=800)
 
-ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y = daily_sun_mean_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
+p_mean <- ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y = daily_sun_mean_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
   #geom_point()
   geom_line() +
   labs(x = "Month", y = "Mean Daytime Temperature") + 
@@ -1129,7 +1178,7 @@ ggplot(dat = daily_sun_mean_yearly_plot, aes(x = date_day, y = daily_sun_mean_ye
   facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right") +
   geom_text(data = panel_labels, aes(x = -Inf, y = Inf, label = label), inherit.aes = FALSE, hjust = -0.3, vjust = 1.3, fontface = "bold", size = 7)
 
-dev.off()
+#dev.off()
 
 
 # legend
@@ -1168,12 +1217,12 @@ ggsave("plots/FigS_EnvDat_legend_20260906.png", legend, width = 9, height = 1, d
 
 # FIGURE S3 - MINIMUM
 
-png("plots/FigS_EnvDat_min_20260906.png", width = 17, height = 17, units="cm", res=800)
+#png("plots/FigS_EnvDat_min_20261026.png", width = 17, height = 17, units="cm", res=800)
 
-ggplot(dat = daily_sun_min_yearly_plot, aes(x = date_day, y = daily_sun_min_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
+p_min <- ggplot(dat = daily_sun_min_yearly_plot, aes(x = date_day, y = daily_sun_min_yearly, col = site_warm, linetype = treat_comp, group = treat_comp)) +
   #geom_point()
   geom_line() +
-  labs(x = "Month", y = "Mean Daytime Temperature") +
+  labs(x = "Month", y = "Minimum Daytime Temperature") +
   theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black")) +
   theme_bw() +
@@ -1198,7 +1247,112 @@ ggplot(dat = daily_sun_min_yearly_plot, aes(x = date_day, y = daily_sun_min_year
   guides(colour = "none") +
   scale_linetype_manual(labels = c("bare soil", "vegetation"),values = c("solid", "longdash")) +
   facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right") +
-  geom_text(data = panel_labels, aes(x = -Inf, y = Inf, label = label), inherit.aes = FALSE, hjust = -0.3, vjust = 1.3, fontface = "bold", size = 7)
+  geom_text(data = panel_labels_min, aes(x = -Inf, y = Inf, label = label), inherit.aes = FALSE, hjust = -0.3, vjust = 1.3, fontface = "bold", size = 7)
+
+#dev.off()
+
+# FIGURE S3 - COMBINED, combined years
+
+library(patchwork)
+
+fig_s3 <- p_mean | p_min
+
+ggsave("plots/FigS_EnvDat_four_panel_20261026.png", plot = fig_s3, width = 27, height = 17, units = "cm", dpi = 800)
+
+# FIGURE S3 - MEAN, all three years consecutively
+png("plots/FigS_EnvDat_mean_all_years_20261026.png", width = 27, height = 17, units = "cm", res = 800)
+
+ggplot(data = daily_sun_mean_all_years_plot, aes(x = plot_date, y = daily_sun_mean, col = site_warm, linetype = treat_comp, group = interaction(site_warm, treat_comp, year))) +
+  geom_line() +
+  geom_vline(xintercept = as.numeric(daily_sun_mean_all_years_plot %>%
+                                       distinct(year, plot_date) %>%
+                                       group_by(year) %>%
+                                       summarize(start = min(plot_date), .groups = "drop") %>%
+                                       arrange(year) %>%
+                                       slice(-1) %>%
+                                       pull(start)),
+             colour = "gray70",
+             linetype = "dashed",
+             linewidth = 0.5) +
+  labs(x = "Date", y = "Mean Daytime Temperature") +
+  theme(panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.text = element_text(face = "italic", size = 12),
+        axis.title = element_text(face = "bold", size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12)) +
+  scale_colour_manual(values = c("#4D531B", "#4D531B", "#244B71"),
+                      labels = c("beyond-range site", "beyond-range site", "within-range site")) +
+  scale_linetype_manual(labels = c("bare soil", "vegetation"), values = c("solid", "longdash")) +
+  #scale_x_date(breaks = seq(from = min(daily_sun_mean_all_years_plot$plot_date), to = max(daily_sun_mean_all_years_plot$plot_date), by = "1 month"),
+  #             labels = function(x) {paste0(format(x, "%b"),"\n", min(lubridate::year(daily_sun_mean_all_years_plot$date)) + floor(as.numeric(x - as.Date("2000-05-01")) / 154))}) +
+  scale_x_date(breaks = month_breaks,
+               labels = paste0(month_labels, "\n", year_labels)) +
+  guides(colour = "none") +
+  facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right") +
+  geom_text(data = panel_labels, aes(x = -Inf, y = Inf, label = label), 
+            inherit.aes = FALSE, 
+            hjust = -0.3, 
+            vjust = 1.3, 
+            fontface = "bold", 
+            size = 7)
+
+#dev.off()
+
+# FIGURE S3 - MINIMUM, all three years consecutively
+png("plots/FigS_EnvDat_min_all_years_20261026.png",
+    width = 27, height = 17, units = "cm", res = 800)
+
+ggplot(data = daily_sun_min_all_years_plot, aes(x = plot_date, y = daily_sun_min, col = site_warm, linetype = treat_comp, group = interaction(site_warm, treat_comp, year))) +
+  geom_line() +
+  geom_vline(xintercept = as.numeric(daily_sun_min_all_years_plot %>%
+                                       distinct(year, plot_date) %>%
+                                       group_by(year) %>%
+                                       summarize(start = min(plot_date), .groups = "drop") %>%
+                                       arrange(year) %>%
+                                       slice(-1) %>%
+                                       pull(start)),
+             colour = "gray70",
+             linetype = "dashed",
+             linewidth = 0.5) +
+  labs(x = "Date", y = "Minimum Daytime Temperature") +
+  theme(panel.border = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.text = element_text(face = "italic", size = 12),
+        axis.title = element_text(face = "bold", size = 14),
+        axis.text = element_text(size = 12),
+        legend.title = element_blank(),
+        legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_text(size = 12)) +
+  scale_colour_manual(values = c("#4D531B", "#4D531B", "#244B71"),
+                      labels = c("beyond-range site", "beyond-range site", "within-range site")) +
+  scale_linetype_manual(labels = c("bare soil", "vegetation"), values = c("solid", "longdash")) +
+  #scale_x_date(breaks = seq(from = min(daily_sun_mean_all_years_plot$plot_date), to = max(daily_sun_mean_all_years_plot$plot_date), by = "1 month"),
+  #             labels = function(x) {paste0(format(x, "%b"),"\n", min(lubridate::year(daily_sun_mean_all_years_plot$date)) + floor(as.numeric(x - as.Date("2000-05-01")) / 154))}) +
+  scale_x_date(breaks = month_breaks,
+               labels = paste0(month_labels, "\n", year_labels)) +
+  guides(colour = "none") +
+  facet_wrap(~ site, labeller = labeller(site = c("hi" = "beyond-range site", "lo" = "within-range site")), nrow = 2, strip.position = "right") +
+  geom_text(data = panel_labels, aes(x = -Inf, y = Inf, label = label), 
+            inherit.aes = FALSE, 
+            hjust = -0.3, 
+            vjust = 1.3, 
+            fontface = "bold", 
+            size = 7)
 
 dev.off()
 
